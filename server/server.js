@@ -3,7 +3,7 @@ var path = require('path')
 var app = express();
 
 //Path to img file directory
-var dir = path.join(__dirname, '../data');
+var dir = path.join('C:/SSD_Dataset');
 app.use('/img',express.static(dir));
 
 //launch server
