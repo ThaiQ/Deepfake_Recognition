@@ -24,3 +24,4 @@ for folder in fakeimages:
     for image in images:
         labeledimage = label_face('http://73.70.9.32:8080/img/Fake_Unlabeled_Images/' + folder + '/' + image, face_client)
         labeledimage.save("C:/SSD_Dataset/Real_Labeled_Images/" + folder + "/" + image)
+    print("Folder complete")
