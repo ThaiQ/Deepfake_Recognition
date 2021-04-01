@@ -5,14 +5,16 @@ from os import listdir
 from os.path import isfile, join
 
 # set video file path of input video with name and extension
+path_to_data = './data/Fake_Videos/'
+path_to_labeled_data = './data/Fake_Unlabeled_Images/'
 
-onlyfiles = [f for f in listdir('C:/SSD_Dataset/Fake Videos/') if isfile(join('C:/SSD_Dataset/Fake Videos/', f))] #Get list with all name of files in directory specified
+onlyfiles = [f for f in listdir(path_to_data) if isfile(join(path_to_data, f))] #Get list with all name of files in directory specified
 
 for value in onlyfiles:
-    vid = cv2.VideoCapture(join('C:/SSD_Dataset/Fake Videos/', value))
+    vid = cv2.VideoCapture(join(path_to_data, value))
     name = value[:-4]
-    if not os.path.exists('C:/SSD_Dataset/Fake Unlabeled Images/' + name): #Create Path to save images to
-        os.makedirs('C:/SSD_Dataset/Fake Unlabeled Images/' + name) 
+    if not os.path.exists(path_to_labeled_data + name): #Create Path to save images to
+        os.makedirs(path_to_labeled_data + name) 
     #for frame identity
     print("Working on video " + name)
     index = 0
@@ -25,7 +27,7 @@ for value in onlyfiles:
             break
         # Saves images
         if (index % 20 == 0):
-            path = 'C:/SSD_Dataset/Fake Unlabeled Images/' + name + '/' + name + '_' + str(imgcount) + '.jpg' #Path to save image to with image name
+            path = path_to_labeled_data + name + '/' + name + '_' + str(imgcount) + '.jpg' #Path to save image to with image name
             cv2.imwrite(path, frame)
             print(name + '/' + name + '_' + str(imgcount) + '.jpg')
             imgcount += 1
