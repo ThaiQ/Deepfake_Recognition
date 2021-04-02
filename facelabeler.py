@@ -18,32 +18,34 @@ ENDPOINT = "https://imagelabeller.cognitiveservices.azure.com/"
 
 # Create an authenticated FaceClient.
 #fakeimages = [f for f in listdir('C:/SSD_Dataset/Fake_Unlabeled_Images/')] #Get list with all name of files in fake images directory
-realimages = [f for f in listdir('C:/SSD_Dataset/Real_Unlabeled_Images/')] #Get list with all name of files in directory specified
+images = [f for f in listdir('C:/SSD_Dataset/Fake_Unlabeled_Images/')] #Get list with all name of files in directory specified
+currentimages = [f for f in listdir('C:/SSD_Dataset/Fake_Labeled_Images/')]
+images = [x for x in images if x not in currentimages]
 face_client = FaceClient(ENDPOINT, CognitiveServicesCredentials(KEY))
-for folder in realimages:
-    if not os.path.exists("C:/SSD_Dataset/Real_Labeled_Images/" + folder): #Create Path to save images to
-        os.makedirs("C:/SSD_Dataset/Real_Labeled_Images/" + folder) 
-    images = [f for f in listdir('C:/SSD_Dataset/Real_Unlabeled_Images/' + folder) if isfile(join('C:/SSD_Dataset/Real_Unlabeled_Images/' + folder, f))]
+for folder in images:
+    if not os.path.exists("C:/SSD_Dataset/Fake_Labeled_Images/" + folder): #Create Path to save images to
+        os.makedirs("C:/SSD_Dataset/Fake_Labeled_Images/" + folder) 
+    images = [f for f in listdir('C:/SSD_Dataset/Fake_Unlabeled_Images/' + folder) if isfile(join('C:/SSD_Dataset/Fake_Unlabeled_Images/' + folder, f))]
     for image in images:
         try:
-            labeledimage = label_face('http://73.70.9.32:8080/img/Real_Unlabeled_Images/' + folder + '/' + image, face_client)
-            labeledimage[0].save("C:/SSD_Dataset/Real_Labeled_Images/" + folder + "/" + image)
+            labeledimage = label_face('http://73.70.9.32:8080/img/Fake_Unlabeled_Images/' + folder + '/' + image, face_client)
+            labeledimage[0].save("C:/SSD_Dataset/Fake_Labeled_Images/" + folder + "/" + image)
             
             tree = ET.parse('xmltemplate.xml')
             root = tree.getroot()
-            root[0].text = "C:/SSD_Dataset/Real_Unlabeled_Images/" + folder
+            root[0].text = "C:/SSD_Dataset/Fake_Unlabeled_Images/" + folder
             root[1].text = image
-            root[2].text = "C:/SSD_Dataset/Real_Unlabeled_Images/" + folder + '/' + image
-            imageshape = (cv2.imread("C:/SSD_Dataset/Real_Unlabeled_Images/" + folder + '/' + image)).shape
+            root[2].text = "C:/SSD_Dataset/Fake_Unlabeled_Images/" + folder + '/' + image
+            imageshape = (cv2.imread("C:/SSD_Dataset/Fake_Unlabeled_Images/" + folder + '/' + image)).shape
             root[4][0].text = str(imageshape[1])
             root[4][1].text = str(imageshape[0])
             root[4][2].text = str(imageshape[2])
-            root[6][0].text = "real"
+            root[6][0].text = "fake"
             root[6][4][0].text = str(labeledimage[1][0][0])
             root[6][4][1].text = str(labeledimage[1][1][1])
             root[6][4][2].text = str(labeledimage[1][1][0])
             root[6][4][3].text = str(labeledimage[1][0][1])
-            tree.write("C:/SSD_Dataset/Real_Labeled_Images/" + folder + "/" + image[:-4] + ".xml")
+            tree.write("C:/SSD_Dataset/Fake_Labeled_Images/" + folder + "/" + image[:-4] + ".xml")
             #time.sleep(3)
         except Exception as inst:
             print("Encountered an image without a face: " + image)
