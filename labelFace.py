@@ -41,4 +41,4 @@ def label_face(imageurl, face_client):
     draw = ImageDraw.Draw(img)
     for face in detected_faces:
         draw.rectangle(getRectangle(face), outline='red')
-    return img
+    return [img, getRectangle(face)]
