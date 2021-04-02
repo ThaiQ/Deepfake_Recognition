@@ -44,12 +44,6 @@ for folder in realimages:
             root[6][4][2].text = str(labeledimage[1][1][0])
             root[6][4][3].text = str(labeledimage[1][0][1])
             tree.write("C:/SSD_Dataset/Real_Labeled_Images/" + folder + "/" + image[:-4] + ".xml")
-
-            f = open("C:/SSD_Dataset/Real_Labeled_Images/" + folder + "/" + image[:-4] + ".txt","w+")
-            #print(str(labeledimage[1]))
-            f.write(str(labeledimage[1]))
-            f.close()
             #time.sleep(3)
         except Exception as inst:
-            print(type(inst))
             print("Encountered an image without a face: " + image)
