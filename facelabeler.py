@@ -28,7 +28,7 @@ for folder in images:
     images = [f for f in listdir('C:/SSD_Dataset/Fake_Unlabeled_Images/' + folder) if isfile(join('C:/SSD_Dataset/Fake_Unlabeled_Images/' + folder, f))]
     for image in images:
         try:
-            labeledimage = label_face('http://73.70.9.32:8080/img/Fake_Unlabeled_Images/' + folder + '/' + image, face_client)
+            labeledimage = label_face('http://47.25.122.64:8080/img/Fake_Unlabeled_Images/' + folder + '/' + image, face_client)
             labeledimage[0].save("C:/SSD_Dataset/Fake_Labeled_Images/" + folder + "/" + image)
             
             tree = ET.parse('xmltemplate.xml')
