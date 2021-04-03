@@ -37,9 +37,9 @@ for folder in images:
             root[1].text = image
             root[2].text = "C:/SSD_Dataset/Fake_Unlabeled_Images/" + folder + '/' + image
             imageshape = (cv2.imread("C:/SSD_Dataset/Fake_Unlabeled_Images/" + folder + '/' + image)).shape
-            root[4][0].text = str(imageshape[1])
-            root[4][1].text = str(imageshape[0])
-            root[4][2].text = str(imageshape[2])
+            root[4][0].text = str(imageshape[1]) #Width
+            root[4][1].text = str(imageshape[0]) #Height
+            root[4][2].text = str(imageshape[2]) #Depth
             root[6][0].text = "fake"
             root[6][4][0].text = str(labeledimage[1][0][0])
             root[6][4][1].text = str(labeledimage[1][1][1])
