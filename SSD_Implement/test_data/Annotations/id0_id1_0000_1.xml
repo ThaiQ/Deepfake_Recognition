@@ -1,0 +1,26 @@
+<annotation>
+  <folder>C:\Users\quach\Desktop\Deepfake_Recognition_SSD\SSD_Implement\test_data\</folder>
+  <filename>id0_id1_0000_1</filename>
+  <path>C:\Users\quach\Desktop\Deepfake_Recognition_SSD\SSD_Implement\test_data\JPEGImages\id0_id1_0000_1.jpg</path>
+  <source>
+    <database>Unknown</database>
+  </source>
+  <size>
+    <width>944</width>
+    <height>500</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>fake</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>547</xmin>
+      <ymin>221</ymin>
+      <xmax>628</xmax>
+      <ymax>111</ymax>
+    </bndbox>
+  </object>
+</annotation>

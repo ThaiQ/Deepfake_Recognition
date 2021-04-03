@@ -1,0 +1,26 @@
+<annotation>
+  <folder>img</folder>
+  <filename>frame_00050</filename>
+  <path>C:\Users\quach\Desktop\test_dataset\img\frame_00050.png</path>
+  <source>
+    <database>Unknown</database>
+  </source>
+  <size>
+    <width>944</width>
+    <height>500</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>fake</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>424</xmin>
+      <ymin>62</ymin>
+      <xmax>643</xmax>
+      <ymax>286</ymax>
+    </bndbox>
+  </object>
+</annotation>
