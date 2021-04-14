@@ -81,7 +81,7 @@ model = ssd_300(image_size=(img_height, img_width, img_channels),
 # 2: Load some weights into the model.
 
 # TODO: Set the path to the weights you want to load.
-weights_path = 'VGG_VOC0712_SSD_300x300_iter_120000.h5'
+weights_path = 'VGG_ILSVRC_16_layers_fc_reduced.h5'
 
 model.load_weights(weights_path, by_name=True)
 
