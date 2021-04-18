@@ -374,12 +374,7 @@ print(y_pred_decoded_inv[i])
 # 6: Draw the predicted boxes onto the image
 # Set the colors for the bounding boxes
 colors = plt.cm.hsv(np.linspace(0, 1, n_classes+1)).tolist()
-classes = ['background',
-           'aeroplane', 'bicycle', 'bird', 'boat',
-           'bottle', 'bus', 'car', 'cat',
-           'chair', 'cow', 'diningtable', 'dog',
-           'horse', 'motorbike', 'person', 'pottedplant',
-           'sheep', 'sofa', 'fake', 'real']
+classes = ['fake', 'real']
 
 plt.figure(figsize=(20,12))
 plt.imshow(batch_original_images[i])
