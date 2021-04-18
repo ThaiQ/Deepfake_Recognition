@@ -306,8 +306,8 @@ callbacks = [model_checkpoint,
 '''
 # If you're resuming a previous training, set `initial_epoch` and `final_epoch` accordingly.
 initial_epoch   = 0 #init at 0
-final_epoch     = 3 #120 usually
-steps_per_epoch = 1 #1000 usually
+final_epoch     = 120 #120 usually
+steps_per_epoch = 1000 #1000 usually
 
 history = model.fit_generator(generator=train_generator,
                               steps_per_epoch=steps_per_epoch,
