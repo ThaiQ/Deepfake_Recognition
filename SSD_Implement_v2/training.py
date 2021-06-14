@@ -1,7 +1,8 @@
-from keras.optimizers import Adam, SGD
-from keras.callbacks import ModelCheckpoint, LearningRateScheduler, TerminateOnNaN, CSVLogger
-from keras import backend as K
-from keras.models import load_model
+from tensorflow.keras.optimizers import Adam, SGD
+from tensorflow.keras.callbacks import ModelCheckpoint, LearningRateScheduler, TerminateOnNaN, CSVLogger
+from tensorflow.keras import backend as K
+from tensorflow.keras.models import load_model
+import tensorflow as tf
 from math import ceil
 import numpy as np
 from matplotlib import pyplot as plt
@@ -22,14 +23,15 @@ from data_generator.object_detection_2d_photometric_ops import ConvertTo3Channel
 from data_generator.data_augmentation_chain_original_ssd import SSDDataAugmentation
 from data_generator.object_detection_2d_misc_utils import apply_inverse_transforms
 
-
+tf.compat.v1.disable_eager_execution()
+tf.compat.v1.experimental.output_all_intermediates(True)
 
 '''
 ######################################################################################
 Config
 ######################################################################################
 '''
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+#os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 img_height = 300 # Height of the model input images DEFAULT IS 300
 img_width = 540 # Width of the model input images DEFAULT IS 300
 img_channels = 3 # Number of color channels of the model input images
