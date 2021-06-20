@@ -222,7 +222,6 @@ def decode_detections(y_pred,
         else:
             pred = np.array(pred) # Even if empty, `pred` must become a Numpy array.
         y_pred_decoded.append(pred) # ...and now that we're done, append the array of final predictions for this batch item to the output list
-
     return y_pred_decoded
 
 def decode_detections_fast(y_pred,
