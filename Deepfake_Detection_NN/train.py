@@ -1,22 +1,34 @@
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras import layers
-from getData import getDataset, getOneImagePerFolder
+from getData import getDataset, getOneImagePerFolder, getDataRandomized
 def defineModel():
     inputs_disc = x = tf.keras.Input(shape=(192, 256, 3,))
     x = layers.experimental.preprocessing.RandomFlip()(x, training=True)
     x = layers.experimental.preprocessing.RandomRotation((-1,1))(x, training=True)
     x = layers.experimental.preprocessing.RandomTranslation((-0.2,0.2),(-0.2,0.2))(x, training=True)
     x = layers.experimental.preprocessing.RandomZoom((-0.1,0))(x, training=True)
-    x = layers.Conv2D(16, (3, 3), (2, 2), activation="relu", padding='same')(x)
+    x = layers.Conv2D(16, (3, 3), (1, 1), activation="relu", padding='same')(x)
     x = layers.BatchNormalization()(x, training=True)
     x = layers.MaxPooling2D((2,2))(x)
     x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
-    x = layers.Conv2D(32, (3, 3), (2, 2), activation="relu", padding='same')(x)
+    x = layers.Conv2D(16, (3, 3), (1, 1), activation="relu", padding='same')(x)
     x = layers.BatchNormalization()(x, training=True)
     x = layers.MaxPooling2D((2,2))(x)
     x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
-    x = layers.Conv2D(64, (3, 3), (2, 2), activation="relu", padding='same')(x)
+    x = layers.Conv2D(32, (3, 3), (1, 1), activation="relu", padding='same')(x)
+    x = layers.BatchNormalization()(x, training=True)
+    x = layers.MaxPooling2D((2,2))(x)
+    x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
+    x = layers.Conv2D(32, (3, 3), (1, 1), activation="relu", padding='same')(x)
+    x = layers.BatchNormalization()(x, training=True)
+    x = layers.MaxPooling2D((2,2))(x)
+    x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
+    x = layers.Conv2D(64, (3, 3), (1, 1), activation="relu", padding='same')(x)
+    x = layers.BatchNormalization()(x, training=True) 
+    x = layers.MaxPooling2D((2,2))(x)
+    x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
+    x = layers.Conv2D(64, (3, 3), (1, 1), activation="relu", padding='same')(x)
     x = layers.BatchNormalization()(x, training=True) 
     x = layers.MaxPooling2D((2,2))(x)
     x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
@@ -31,16 +43,23 @@ def defineModel():
     model.summary()
     return model
 
+def getDataFromList(filelist):
+    dataset = []
+    for file in filelist:
+        img = tf.keras.preprocessing.image.load_img(file)
+        imgarr = tf.keras.preprocessing.image.img_to_array(img)
+        imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='bilinear')
+        dataset.append(imgarr)
+    return np.array(dataset)
+
 def trainModel(model):
     i = 0
+    dat = getDataRandomized()
     while (i < 10):
-        X = getDataset(10000, 10000 * i)
-        y = np.array(X[1])
-        X = np.array(X[0])
-        shuffler = np.random.permutation(len(X))
-        X = X[shuffler]
-        y = y[shuffler]
-        model.fit(X, y, epochs=10, batch_size=1000,class_weight={1:.05, 0:.95}, validation_split=.1, validation_batch_size=500, shuffle=True)
+        batch = dat[np.random.randint(dat.shape[0], size=10000), :]
+        X = getDataFromList(batch[:,0])
+        y = batch[:,1].astype(np.float)
+        model.fit(X, y, epochs=10, batch_size=1000,class_weight={1:.1, 0:.90}, validation_split=.1, validation_batch_size=500, shuffle=True)
         i += 1
     model.save('Deepfake_Detector_Model.h5')
     return model

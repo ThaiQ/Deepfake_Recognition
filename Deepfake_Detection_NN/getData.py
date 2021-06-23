@@ -1,6 +1,7 @@
 from os import listdir
 from os.path import isfile, join
 import tensorflow as tf
+import numpy as np
 
 def getDataset(numimages, startnum):
     dataset = [[], []]
@@ -67,3 +68,21 @@ def getOneImagePerFolder():
         else:
             continue
     return dataset
+
+def getDataRandomized():
+    array = []
+    folders = [f for f in listdir('D:/SSD_Dataset/Images/Training/Fake/')] 
+    for folder in folders:
+        images = [f for f in listdir('D:/SSD_Dataset/Images/Training/Fake/' + folder) if isfile(join('D:/SSD_Dataset/Images/Training/Fake/' + folder, f))]
+        for image in images:
+            array.append(['D:/SSD_Dataset/Images/Training/Fake/' + folder + '/' + image, 1])
+            
+    folders = [f for f in listdir('D:/SSD_Dataset/Images/Training/Real/')]
+    for folder in folders:
+        images = [f for f in listdir('D:/SSD_Dataset/Images/Training/Real/' + folder) if isfile(join('D:/SSD_Dataset/Images/Training/Real/' + folder, f))]
+        for image in images:
+            array.append(['D:/SSD_Dataset/Images/Training/Real/' + folder + '/' + image, 0])
+
+    array = np.array(array)
+    np.random.shuffle(np.array(array))
+    return array

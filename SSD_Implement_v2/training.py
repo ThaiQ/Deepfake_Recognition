@@ -138,63 +138,63 @@ VOC_2007_annotations_dir      = '../../datasets/VOCdevkit/VOC2007/Annotations/'
 VOC_2012_annotations_dir      = '../../datasets/VOCdevkit/VOC2012/Annotations/'
 VOC_annotations_dir = 'C:/Github/Deepfake_Recognition_SSD/SSD_Implement/test_data/Annotations/'
 
-# The paths to the image sets.
-VOC_2007_train_image_set_filename    = '../../datasets/VOCdevkit/VOC2007/ImageSets/Main/train.txt'
-VOC_2012_train_image_set_filename    = '../../datasets/VOCdevkit/VOC2012/ImageSets/Main/train.txt'
-VOC_2007_val_image_set_filename      = '../../datasets/VOCdevkit/VOC2007/ImageSets/Main/val.txt'
-VOC_2012_val_image_set_filename      = '../../datasets/VOCdevkit/VOC2012/ImageSets/Main/val.txt'
-VOC_2007_trainval_image_set_filename = '../../datasets/VOCdevkit/VOC2007/ImageSets/Main/trainval.txt'
-VOC_2012_trainval_image_set_filename = '../../datasets/VOCdevkit/VOC2012/ImageSets/Main/trainval.txt'
-VOC_2007_test_image_set_filename     = '../../datasets/VOCdevkit/VOC2007/ImageSets/Main/test.txt'
-VOC_set = 'C:/Github/Deepfake_Recognition_SSD/SSD_Implement/test_data/train.txt'
-
-train_dataset.parse_xml(images_dirs=[VOC_images_dir],
-                        image_set_filenames=[VOC_set],
-                        annotations_dirs=[VOC_annotations_dir],
-                        classes=classes,
-                        include_classes='all',
-                        exclude_truncated=False,
-                        exclude_difficult=False,
-                        ret=False)
-
-val_dataset.parse_xml(images_dirs=[VOC_images_dir],
-                      image_set_filenames=[VOC_set],
-                      annotations_dirs=[VOC_annotations_dir],
-                      classes=classes,
-                      include_classes='all',
-                      exclude_truncated=False,
-                      exclude_difficult=True,
-                      ret=False)
-
-# # The directories that contain the images.
-# fake_images_dir      = 'D:/SSD_Dataset/Images/Fake_Unlabeled_Images'
-# real_images_dir      = 'D:/SSD_Dataset/Images/Real_Unlabeled_Images'
-
-# # The directories that contain the annotations.
-# fake_annotations_dir      = 'D:/SSD_Dataset/Images/Fake_Labeled_Images'
-# real_annotations_dir      = 'D:/SSD_Dataset/Images/Real_Labeled_Images'
-
 # # The paths to the image sets.
-# fake_set = 'C:/Github/Deepfake_Recognition_SSD/SSD_Implement/imagetxts/fakeimages.txt'
-# real_set = 'C:/Github/Deepfake_Recognition_SSD/SSD_Implement/imagetxts/realimages.txt'
+# VOC_2007_train_image_set_filename    = '../../datasets/VOCdevkit/VOC2007/ImageSets/Main/train.txt'
+# VOC_2012_train_image_set_filename    = '../../datasets/VOCdevkit/VOC2012/ImageSets/Main/train.txt'
+# VOC_2007_val_image_set_filename      = '../../datasets/VOCdevkit/VOC2007/ImageSets/Main/val.txt'
+# VOC_2012_val_image_set_filename      = '../../datasets/VOCdevkit/VOC2012/ImageSets/Main/val.txt'
+# VOC_2007_trainval_image_set_filename = '../../datasets/VOCdevkit/VOC2007/ImageSets/Main/trainval.txt'
+# VOC_2012_trainval_image_set_filename = '../../datasets/VOCdevkit/VOC2012/ImageSets/Main/trainval.txt'
+# VOC_2007_test_image_set_filename     = '../../datasets/VOCdevkit/VOC2007/ImageSets/Main/test.txt'
+# VOC_set = 'C:/Github/Deepfake_Recognition_SSD/SSD_Implement/test_data/train.txt'
 
-# train_dataset.parse_xml(images_dirs=[fake_images_dir, real_images_dir],
-#                         image_set_filenames=[fake_set, real_set],
-#                         annotations_dirs=[fake_annotations_dir, real_annotations_dir],
+# train_dataset.parse_xml(images_dirs=[VOC_images_dir],
+#                         image_set_filenames=[VOC_set],
+#                         annotations_dirs=[VOC_annotations_dir],
 #                         classes=classes,
 #                         include_classes='all',
 #                         exclude_truncated=False,
 #                         exclude_difficult=False,
 #                         ret=False)
 
-# val_dataset.parse_xml(images_dirs=[fake_images_dir, real_images_dir],
-#                       image_set_filenames=[fake_set, real_set],
-#                       annotations_dirs=[fake_annotations_dir, real_annotations_dir],
+# val_dataset.parse_xml(images_dirs=[VOC_images_dir],
+#                       image_set_filenames=[VOC_set],
+#                       annotations_dirs=[VOC_annotations_dir],
 #                       classes=classes,
 #                       include_classes='all',
 #                       exclude_truncated=False,
 #                       exclude_difficult=True,
 #                       ret=False)
+
+# The directories that contain the images.
+fake_images_dir      = 'D:/SSD_Dataset/Images/Fake_Unlabeled_Images'
+real_images_dir      = 'D:/SSD_Dataset/Images/Real_Unlabeled_Images'
+
+# The directories that contain the annotations.
+fake_annotations_dir      = 'D:/SSD_Dataset/Images/Fake_Labeled_Images'
+real_annotations_dir      = 'D:/SSD_Dataset/Images/Real_Labeled_Images'
+
+# The paths to the image sets.
+fake_set = 'C:/Github/Deepfake_Recognition_SSD/SSD_Implement/imagetxts/fakeimages.txt'
+real_set = 'C:/Github/Deepfake_Recognition_SSD/SSD_Implement/imagetxts/realimages.txt'
+
+train_dataset.parse_xml(images_dirs=[fake_images_dir, real_images_dir],
+                        image_set_filenames=[fake_set, real_set],
+                        annotations_dirs=[fake_annotations_dir, real_annotations_dir],
+                        classes=classes,
+                        include_classes='all',
+                        exclude_truncated=False,
+                        exclude_difficult=False,
+                        ret=False)
+
+val_dataset.parse_xml(images_dirs=[fake_images_dir, real_images_dir],
+                      image_set_filenames=[fake_set, real_set],
+                      annotations_dirs=[fake_annotations_dir, real_annotations_dir],
+                      classes=classes,
+                      include_classes='all',
+                      exclude_truncated=False,
+                      exclude_difficult=True,
+                      ret=False)
 
 # Optional: Convert the dataset into an HDF5 dataset. This will require more disk space, but will
 # speed up the training. Doing this is not relevant in case you activated the `load_images_into_memory`
@@ -306,8 +306,8 @@ def lr_schedule(epoch):
 
 # If you're resuming a previous training, set `initial_epoch` and `final_epoch` accordingly.
 initial_epoch   = 0 #init at 0
-final_epoch     = 2 #120 usually
-steps_per_epoch = 100 #1000 usually
+final_epoch     = 10 #120 usually
+steps_per_epoch = 1000 #1000 usually
 
 # Define model callbacks.
 # TODO: Set the filepath under which you want to save the model.
