@@ -306,18 +306,18 @@ def lr_schedule(epoch):
 
 # If you're resuming a previous training, set `initial_epoch` and `final_epoch` accordingly.
 initial_epoch   = 0 #init at 0
-final_epoch     = 10 #120 usually
+final_epoch     = 50 #120 usually
 steps_per_epoch = 1000 #1000 usually
 
 # Define model callbacks.
 # TODO: Set the filepath under which you want to save the model.
-model_checkpoint = ModelCheckpoint(filepath='ssd300_pascal_07+12_epoch-{epoch:02d}_loss-{loss:.4f}_val_loss-{val_loss:.4f}.h5',
+model_checkpoint = ModelCheckpoint(filepath='Deepfake_Detector_epoch-{epoch:02d}_loss-{loss:.4f}_val_loss-{val_loss:.4f}.h5',
                                    monitor='val_loss',
                                    verbose=1,
                                    save_best_only=True,
                                    save_weights_only=False,
                                    mode='auto',
-                                   period=50) #normally final epoch
+                                   period=3) #normally final epoch
 #model_checkpoint.best = 
 
 csv_logger = CSVLogger(filename='ssd300_pascal_07+12_training_log.csv',

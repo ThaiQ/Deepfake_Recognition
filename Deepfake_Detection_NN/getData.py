@@ -86,3 +86,48 @@ def getDataRandomized():
     array = np.array(array)
     np.random.shuffle(np.array(array))
     return array
+
+def generateBatch(foldername):
+    batch = [[], []]
+    images = [f for f in listdir('D:/SSD_Dataset/Images/Training/Real/' + foldername)]
+    for image in images:
+        img = tf.keras.preprocessing.image.load_img('D:/SSD_Dataset/Images/Training/Real/' + foldername + '/' + image)
+        imgarr = tf.keras.preprocessing.image.img_to_array(img)
+        imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='bilinear')
+        batch[0].append(imgarr)
+        batch[1].append(0)
+    folders = [f for f in listdir('D:/SSD_Dataset/Images/Training/Fake/')]
+    base, identifier = foldername.split('_')
+    for folder in folders:
+        spl = folder.split('_')
+        if (spl[0] == base and spl[2] == identifier):
+            images = [f for f in listdir('D:/SSD_Dataset/Images/Training/Fake/' + folder + '/')]
+            for image in images:
+                img = tf.keras.preprocessing.image.load_img('D:/SSD_Dataset/Images/Training/Fake/' + folder + '/' + image)
+                imgarr = tf.keras.preprocessing.image.img_to_array(img)
+                imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='bilinear')
+                batch[0].append(imgarr)
+                batch[1].append(1)
+    for value in batch[1]:
+        if value == 1:
+            return batch
+
+def getValidationData():
+    batch = [[], []]
+    folders = [f for f in listdir('D:/SSD_Dataset/Images/Validation/Real/')]
+    for folder in folders:
+        images = [f for f in listdir('D:/SSD_Dataset/Images/Validation/Real/' + folder)]
+        for image in images:
+            img = tf.keras.preprocessing.image.load_img('D:/SSD_Dataset/Images/Validation/Real/' + folder + '/' + image)
+            imgarr = tf.keras.preprocessing.image.img_to_array(img)
+            imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='bilinear')
+            batch[1].append(imgarr)
+    folders = [f for f in listdir('D:/SSD_Dataset/Images/Validation/Fake/')]
+    for folder in folders:
+        images = [f for f in listdir('D:/SSD_Dataset/Images/Validation/Fake/' + folder)]
+        for image in images:
+            img = tf.keras.preprocessing.image.load_img('D:/SSD_Dataset/Images/Validation/Fake/' + folder + '/' + image)
+            imgarr = tf.keras.preprocessing.image.img_to_array(img)
+            imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='bilinear')
+            batch[0].append(imgarr)
+    return batch
