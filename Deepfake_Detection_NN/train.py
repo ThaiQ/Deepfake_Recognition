@@ -1,14 +1,14 @@
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras import layers
-from getData import getDataset, getOneImagePerFolder, getDataRandomized, generateBatch, getValidationData
+from getData import getDataset, getOneImagePerFolder, getDataRandomized, generateBatch, getValidationData, createOneBatch
 from os import listdir
 def defineModel():
     inputs_disc = x = tf.keras.Input(shape=(192, 256, 3,))
-    x = layers.experimental.preprocessing.RandomFlip()(x, training=True)
-    x = layers.experimental.preprocessing.RandomRotation((-1,1))(x, training=True)
-    x = layers.experimental.preprocessing.RandomTranslation((-0.2,0.2),(-0.2,0.2))(x, training=True)
-    x = layers.experimental.preprocessing.RandomZoom((-0.1,0))(x, training=True)
+    #x = layers.experimental.preprocessing.RandomFlip()(x, training=True)
+    #x = layers.experimental.preprocessing.RandomRotation((-1,1))(x, training=True)
+    #x = layers.experimental.preprocessing.RandomTranslation((-0.2,0.2),(-0.2,0.2))(x, training=True)
+    #x = layers.experimental.preprocessing.RandomZoom((-0.1,0))(x, training=True)
     x = layers.Conv2D(16, (4, 4), (1, 1), activation="relu", padding='same')(x)
     x = layers.BatchNormalization()(x, training=True)
     x = layers.MaxPooling2D((2,2))(x)
@@ -60,8 +60,10 @@ def findRatio(y):
             count += 1
     return (count/len(y))
 
+#Generates batches consisting of real images and each set of fake images that is made from it
+
 # def trainModel(model):
-#     realfolders = [f for f in listdir('D:/SSD_Dataset/Images/Training/Real/')]
+#     realfolders = [f for f in listdir('C:/SSD_Dataset/Images/Training/Real/')]
 #     for folder in realfolders:
 #         batch = generateBatch(folder)
 #         if batch is not None: # and len(batch[1]) > 150
@@ -73,19 +75,43 @@ def findRatio(y):
 #     model.save('Deepfake_Detector_Model.h5')
 #     return model
 
-def trainModel(model):
-    i = 0
-    dat = getDataRandomized()
-    while (i < 10):
-        batch = dat[np.random.randint(dat.shape[0], size=10000), :]
-        X = getDataFromList(batch[:,0])
-        y = batch[:,1].astype(np.float)
-        ratio = findRatio(y)
-        print(ratio)
-        model.fit(X, y, epochs=10, batch_size=1000,class_weight={1:ratio, 0:(1 - ratio)}, validation_split=.1, validation_batch_size=500, shuffle=True)
-        i += 1
-    model.save('Deepfake_Detector_Model.h5')
-    return model
+#TO DO: Write algorithm that gets data in the following way:
+#   For every real folder:
+#       For every fake folder corresponding to that real folder:
+#           Generate a batch containing the real images and the fake images from their respective folders
+#DONE
+
+#Data format:
+# Real: idx_001
+# Fake: idx_idy_001
+# def trainModel(model):
+#     realfolders = [f for f in listdir('C:/SSD_Dataset/Images/Training/Real/')]
+#     for realfolder in realfolders:
+#         split = realfolder.split('_')
+#         fakefolders = [f for f in listdir('C:/SSD_Dataset/Images/Training/Fake/') if (f.split('_')[0] == split[0] and f.split('_')[2] == split[1])]
+#         for fakefolder in fakefolders:
+#             batch = createOneBatch(realfolder, fakefolder)
+#             if batch is not None: # and len(batch[1]) > 150
+#                 X = np.array(batch[0])
+#                 y = np.array(batch[1]).astype(np.float)
+#                 model.fit(X, y, batch_size = len(X), epochs=2, shuffle=True)
+#     model.save('Deepfake_Detector_Model_Batches_Real_Corresponding_Fake_No_Exp_Layers.h5')
+#     return model
+
+
+# def trainModel(model):
+#     i = 0
+#     dat = getDataRandomized()
+#     while (i < 10):
+#         batch = dat[np.random.randint(dat.shape[0], size=10000), :]
+#         X = getDataFromList(batch[:,0])
+#         y = batch[:,1].astype(np.float)
+#         ratio = findRatio(y)
+#         print(ratio)
+#         model.fit(X, y, epochs=10, batch_size=1000,class_weight={1:ratio, 0:(1 - ratio)}, validation_split=.1, validation_batch_size=500, shuffle=True)
+#         i += 1
+#     model.save('Deepfake_Detector_Model.h5')
+#     return model
 
 def loadModel():
     return tf.keras.models.load_model('Deepfake_Detector_Model_BEST.h5')

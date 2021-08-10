@@ -6,20 +6,20 @@ from cv2 import cv2
 avgwidth = 0
 avgheight = 0
 count = 0
-folders = [f for f in listdir('D:/SSD_Dataset/Images/Resized_Fake_Images/')] #Get list with all name of files in directory specified
+folders = [f for f in listdir('C:/SSD_Dataset/Images/Resized_Fake_Images/')] #Get list with all name of files in directory specified
 for folder in folders:
-    images = [f for f in listdir('D:/SSD_Dataset/Images/Resized_Fake_Images/' + folder) if isfile(join('D:/SSD_Dataset/Images/Resized_Fake_Images/' + folder, f))]
+    images = [f for f in listdir('C:/SSD_Dataset/Images/Resized_Fake_Images/' + folder) if isfile(join('C:/SSD_Dataset/Images/Resized_Fake_Images/' + folder, f))]
     for image in images:
-        img = cv2.imread('D:/SSD_Dataset/Images/Resized_Fake_Images/' + folder + '/' + image)
+        img = cv2.imread('C:/SSD_Dataset/Images/Resized_Fake_Images/' + folder + '/' + image)
         avgwidth += len(img[0])
         avgheight += len(img)
         count += 1
 
-folders = [f for f in listdir('D:/SSD_Dataset/Images/Resized_Real_Images/')] #Get list with all name of files in directory specified
+folders = [f for f in listdir('C:/SSD_Dataset/Images/Resized_Real_Images/')] #Get list with all name of files in directory specified
 for folder in folders:
-    images = [f for f in listdir('D:/SSD_Dataset/Images/Resized_Real_Images/' + folder) if isfile(join('D:/SSD_Dataset/Images/Resized_Real_Images/' + folder, f))]
+    images = [f for f in listdir('C:/SSD_Dataset/Images/Resized_Real_Images/' + folder) if isfile(join('C:/SSD_Dataset/Images/Resized_Real_Images/' + folder, f))]
     for image in images:
-        img = cv2.imread('D:/SSD_Dataset/Images/Resized_Real_Images/' + folder + '/' + image)
+        img = cv2.imread('C:/SSD_Dataset/Images/Resized_Real_Images/' + folder + '/' + image)
         avgwidth += len(img[0])
         avgheight += len(img)
         count += 1

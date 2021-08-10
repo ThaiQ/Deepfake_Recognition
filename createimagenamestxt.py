@@ -7,9 +7,9 @@ f = open("fakeimages.txt", 'w')
 # Create an authenticated FaceClient.
 #fakeimages = [f for f in listdir('C:/SSD_Dataset/Fake_Unlabeled_Images/')] #Get list with all name of files in fake images directory
 resolutionNumbers = dict()
-folders = [f for f in listdir('D:/SSD_Dataset/Images/Fake_Unlabeled_Images/')] #Get list with all name of files in directory specified
+folders = [f for f in listdir('C:/SSD_Dataset/Images/Fake_Unlabeled_Images/')] #Get list with all name of files in directory specified
 for folder in folders:
-    images = [f for f in listdir('D:/SSD_Dataset/Images/Fake_Unlabeled_Images/' + folder) if isfile(join('D:/SSD_Dataset/Images/Fake_Unlabeled_Images/' + folder, f))]
+    images = [f for f in listdir('C:/SSD_Dataset/Images/Fake_Unlabeled_Images/' + folder) if isfile(join('C:/SSD_Dataset/Images/Fake_Unlabeled_Images/' + folder, f))]
     for image in images:
         f.write(folder + '/' + image[:-4] + '\n')
 f.close()
