@@ -70,7 +70,7 @@ def trainModel(model):
             y = np.array(batch[1]).astype(np.float)
             ratio = findRatio(y)
             print(str(len(y)) + ', ' + str(ratio))
-            model.fit(X, y, batch_size = len(X), epochs=3, class_weight={1:.3 * ratio, 0:(1-(.3 * ratio))}, shuffle=True)
+            model.fit(X, y, batch_size = len(X), epochs=2, class_weight={1:.3 * ratio, 0:(1-(.3 * ratio))}, shuffle=True)
     model.save('Deepfake_Detector_Model_BigBatches_NoExperimentalLayers.h5')
     return model
 
@@ -113,10 +113,11 @@ def trainModel(model):
 #     return model
 
 def loadModel():
-    return tf.keras.models.load_model('48-93_Deepfake_Detector_Model_BigBatches_NoExperimentalLayers.h5')
+    return tf.keras.models.load_model('BEST_BALANCED_Deepfake_Detector_Model_Batches_Real_Corresponding_Fake_No_Exp_Layers.h5')
 
 #Mode 0 evaluates with one image from each folder in training data, mode 1 evaluates with separate validation dataset
 def evaluateModel(model, mode):
+    evaluateConfusion(model, mode)
     #model.summary()
     if (mode == 0):
         dataset = getOneImagePerFolder()
@@ -138,6 +139,7 @@ def evaluateModel(model, mode):
         if value < .5:
             count += 1
     print("Real Image Accuracy: " + str(float(count / len(real_preds))))
+
 
 #Mode 0 evaluates with one image from each folder in training data, mode 1 evaluates with separate validation dataset
 def evaluateConfusion(model, mode):
@@ -171,8 +173,8 @@ def evaluateConfusion(model, mode):
     print("False Negatives: " + str(FN))
     print("True Negatives (Real): " + str(TN))
 
-#evaluateModel(trainModel(defineModel()), 1)
-evaluateConfusion(loadModel(), 1)
-evaluateModel(loadModel(), 1)
+evaluateModel(trainModel(defineModel()), 1)
+#evaluateConfusion(loadModel(), 1)
+#evaluateModel(loadModel(), 1)
 
 print("Done")
