@@ -61,19 +61,18 @@ def findRatio(y):
     return (count/len(y))
 
 #Generates batches consisting of real images and each set of fake images that is made from it
-
-# def trainModel(model):
-#     realfolders = [f for f in listdir('C:/SSD_Dataset/Images/Training/Real/')]
-#     for folder in realfolders:
-#         batch = generateBatch(folder)
-#         if batch is not None: # and len(batch[1]) > 150
-#             X = np.array(batch[0])
-#             y = np.array(batch[1]).astype(np.float)
-#             ratio = findRatio(y)
-#             print(str(len(y)) + ', ' + str(ratio))
-#             model.fit(X, y, batch_size = 32, epochs=5, class_weight={1:ratio, 0:(1-ratio)}, shuffle=True)
-#     model.save('Deepfake_Detector_Model.h5')
-#     return model
+def trainModel(model):
+    realfolders = [f for f in listdir('C:/SSD_Dataset/Images/Training/Real/')]
+    for folder in realfolders:
+        batch = generateBatch(folder)
+        if batch is not None: # and len(batch[1]) > 150
+            X = np.array(batch[0])
+            y = np.array(batch[1]).astype(np.float)
+            ratio = findRatio(y)
+            print(str(len(y)) + ', ' + str(ratio))
+            model.fit(X, y, batch_size = len(X), epochs=3, class_weight={1:.3 * ratio, 0:(1-(.3 * ratio))}, shuffle=True)
+    model.save('Deepfake_Detector_Model_BigBatches_NoExperimentalLayers.h5')
+    return model
 
 #TO DO: Write algorithm that gets data in the following way:
 #   For every real folder:
@@ -114,8 +113,9 @@ def findRatio(y):
 #     return model
 
 def loadModel():
-    return tf.keras.models.load_model('Deepfake_Detector_Model_BEST.h5')
+    return tf.keras.models.load_model('48-93_Deepfake_Detector_Model_BigBatches_NoExperimentalLayers.h5')
 
+#Mode 0 evaluates with one image from each folder in training data, mode 1 evaluates with separate validation dataset
 def evaluateModel(model, mode):
     #model.summary()
     if (mode == 0):
@@ -139,7 +139,40 @@ def evaluateModel(model, mode):
             count += 1
     print("Real Image Accuracy: " + str(float(count / len(real_preds))))
 
-evaluateModel(trainModel(defineModel()), 1)
-#evaluateModel(loadModel(), 0)
+#Mode 0 evaluates with one image from each folder in training data, mode 1 evaluates with separate validation dataset
+def evaluateConfusion(model, mode):
+    #model.summary()
+    if (mode == 0):
+        dataset = getOneImagePerFolder()
+    elif (mode == 1):
+        dataset = getValidationData()
+    X1 = np.array(dataset[0])
+    X2 = np.array(dataset[1])
+    fake_preds = model.predict(X1, batch_size=32)
+    real_preds = model.predict(X2, batch_size=32)
+
+    TP = 0
+    FP = 0
+    FN = 0
+    TN = 0
+    for value in fake_preds:
+        if value > .5:
+            TP += 1
+        else:
+            FN += 1
+
+    for value in real_preds:
+        if value < .5:
+            TN += 1
+        else:
+            FP += 1
+    print("True Positives (Fake): " + str(TP))
+    print("False Positives: " + str(FP))
+    print("False Negatives: " + str(FN))
+    print("True Negatives (Real): " + str(TN))
+
+#evaluateModel(trainModel(defineModel()), 1)
+evaluateConfusion(loadModel(), 1)
+evaluateModel(loadModel(), 1)
 
 print("Done")
