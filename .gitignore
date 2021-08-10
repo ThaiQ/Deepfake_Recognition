@@ -1,8 +1,5 @@
 data
 node_modules
 package-lock.json
-VGG_ILSVRC_16_layers_fc_reduced.h5
 __pycache__
-Deepfake_Detector_Model*
-*_Deepfake_Detector*
 *.h5
