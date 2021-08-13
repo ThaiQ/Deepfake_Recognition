@@ -1,48 +1,12 @@
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras import layers
+from tensorflow.python.training.tracking import base
 from getData import getDataset, getOneImagePerFolder, getDataRandomized, generateBatch, getValidationData, createOneBatch
+from models import sigmoidModel, reluModel
 from os import listdir
 def defineModel():
-    inputs_disc = x = tf.keras.Input(shape=(192, 256, 3,))
-    #x = layers.experimental.preprocessing.RandomFlip()(x, training=True)
-    #x = layers.experimental.preprocessing.RandomRotation((-1,1))(x, training=True)
-    #x = layers.experimental.preprocessing.RandomTranslation((-0.2,0.2),(-0.2,0.2))(x, training=True)
-    #x = layers.experimental.preprocessing.RandomZoom((-0.1,0))(x, training=True)
-    x = layers.Conv2D(16, (4, 4), (1, 1), activation="relu", padding='same')(x)
-    x = layers.BatchNormalization()(x, training=True)
-    x = layers.MaxPooling2D((2,2))(x)
-    x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
-    x = layers.Conv2D(16, (4, 4), (1, 1), activation="relu", padding='same')(x)
-    x = layers.BatchNormalization()(x, training=True)
-    x = layers.MaxPooling2D((2,2))(x)
-    x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
-    x = layers.Conv2D(32, (4, 4), (1, 1), activation="relu", padding='same')(x)
-    x = layers.BatchNormalization()(x, training=True)
-    x = layers.MaxPooling2D((2,2))(x)
-    x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
-    x = layers.Conv2D(32, (4, 4), (1, 1), activation="relu", padding='same')(x)
-    x = layers.BatchNormalization()(x, training=True)
-    x = layers.MaxPooling2D((2,2))(x)
-    x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
-    x = layers.Conv2D(64, (4, 4), (1, 1), activation="relu", padding='same')(x)
-    x = layers.BatchNormalization()(x, training=True) 
-    x = layers.MaxPooling2D((2,2))(x)
-    x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
-    x = layers.Conv2D(64, (2, 2), (1, 1), activation="relu", padding='same')(x)
-    x = layers.BatchNormalization()(x, training=True) 
-    x = layers.MaxPooling2D((2,2))(x)
-    x = layers.SpatialDropout2D(0.2)(x) #Not needed, but good to have
-    x = layers.Flatten()(x)
-    x = layers.Dense(384, activation="relu")(x)
-    x = layers.Dropout(0.2)(x)
-    x = layers.Dense(96, activation="relu")(x)
-    outputs_disc = x = layers.Dense(1, activation="sigmoid")(x)
-
-    model = tf.keras.Model(inputs=inputs_disc, outputs=outputs_disc, name="DeepfakeDetector")
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['binary_accuracy'])
-    model.summary()
-    return model
+    return reluModel()
 
 def getDataFromList(filelist):
     dataset = []
@@ -61,18 +25,19 @@ def findRatio(y):
     return (count/len(y))
 
 #Generates batches consisting of real images and each set of fake images that is made from it
-def trainModel(model):
-    realfolders = [f for f in listdir('C:/SSD_Dataset/Images/Training/Real/')]
-    for folder in realfolders:
-        batch = generateBatch(folder)
-        if batch is not None: # and len(batch[1]) > 150
-            X = np.array(batch[0])
-            y = np.array(batch[1]).astype(np.float)
-            ratio = findRatio(y)
-            print(str(len(y)) + ', ' + str(ratio))
-            model.fit(X, y, batch_size = len(X), epochs=2, class_weight={1:.3 * ratio, 0:(1-(.3 * ratio))}, shuffle=True)
-    model.save('Deepfake_Detector_Model_BigBatches_NoExperimentalLayers.h5')
-    return model
+# def trainModel(model):
+#     realfolders = [f for f in listdir('C:/SSD_Dataset/Images/Training/Real/')]
+#     for folder in realfolders:
+#         batch = generateBatch(folder)
+#         if batch is not None: # and len(batch[1]) > 150
+#             X = np.array(batch[0])
+#             y = np.array(batch[1]).astype(np.float)
+#             ratio = findRatio(y)
+#             print(str(len(y)) + ', ' + str(ratio))
+#             model.fit(X, y, batch_size = len(X), epochs=5, class_weight={1:.55 * ratio, 0:(1-(.55 * ratio))}, shuffle=True)
+#             #model.fit(X, y, batch_size = len(X), epochs=3, class_weight={1:.045, 0:.955}, shuffle=True)
+#     model.save('Deepfake_Detector_Model_BigBatches_NoExperimentalLayers.h5')
+#     return model
 
 #TO DO: Write algorithm that gets data in the following way:
 #   For every real folder:
@@ -98,19 +63,19 @@ def trainModel(model):
 #     return model
 
 
-# def trainModel(model):
-#     i = 0
-#     dat = getDataRandomized()
-#     while (i < 10):
-#         batch = dat[np.random.randint(dat.shape[0], size=10000), :]
-#         X = getDataFromList(batch[:,0])
-#         y = batch[:,1].astype(np.float)
-#         ratio = findRatio(y)
-#         print(ratio)
-#         model.fit(X, y, epochs=10, batch_size=1000,class_weight={1:ratio, 0:(1 - ratio)}, validation_split=.1, validation_batch_size=500, shuffle=True)
-#         i += 1
-#     model.save('Deepfake_Detector_Model.h5')
-#     return model
+def trainModel(model):
+    i = 0
+    dat = getDataRandomized()
+    while (i < 10):
+        batch = dat[np.random.randint(dat.shape[0], size=10000), :]
+        X = getDataFromList(batch[:,0])
+        y = batch[:,1].astype(np.float)
+        ratio = findRatio(y)
+        print(ratio)
+        model.fit(X, y, epochs=10, batch_size=1000,class_weight={1:.95 * ratio, 0:(1 - (.95 * ratio))}, validation_split=.1, validation_batch_size=500, shuffle=True, steps_per_epoch = 10)
+        i += 1
+    model.save('Deepfake_Detector_Model.h5')
+    return model
 
 def loadModel():
     return tf.keras.models.load_model('BEST_BALANCED_Deepfake_Detector_Model_Batches_Real_Corresponding_Fake_No_Exp_Layers.h5')
