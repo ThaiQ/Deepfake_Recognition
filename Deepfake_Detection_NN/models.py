@@ -63,6 +63,36 @@ def reluModel():
     model.summary()
     return model
 
+def relu256Model():
+    inputs_disc = x = tf.keras.Input(shape=(256, 256, 3,))
+    x = layers.Conv2D(16, (7, 7), (2, 2), activation="relu", padding='valid')(x)
+    x = layers.Conv2D(32, (3, 3), (1, 1), activation="relu", padding='same')(x)
+    x = layers.BatchNormalization()(x, training=True)
+    x = layers.MaxPooling2D((2,2))(x)
+    x = layers.Conv2D(32, (3, 3), (1, 1), activation="relu", padding='same')(x)
+    x = layers.BatchNormalization()(x, training=True)
+    x = layers.Dropout(0.25)(x)
+    x = layers.Conv2D(64, (3, 3), (1, 1), activation="relu", padding='same')(x)
+    x = layers.BatchNormalization()(x, training=True)
+    x = layers.Conv2D(64, (3, 3), (2, 2), activation="relu", padding='same')(x)
+    x = layers.BatchNormalization()(x, training=True)
+    x = layers.Dropout(0.25)(x)
+    x = layers.Conv2D(128, (3, 3), (2, 2), activation="relu", padding='same')(x)
+    x = layers.BatchNormalization()(x, training=True)
+    #x = layers.Dropout(0.25)(x)
+    x = layers.Conv2D(128, (3, 3), (2, 2), activation="relu", padding='same')(x)
+    x = layers.BatchNormalization()(x, training=True)
+    x = layers.Dropout(0.25)(x)
+    x = layers.Flatten()(x)
+    x = layers.Dense(1024, activation="relu")(x)
+    x = layers.Dropout(0.25)(x)
+    outputs_disc = x = layers.Dense(1, activation="sigmoid")(x)
+
+    model = tf.keras.Model(inputs=inputs_disc, outputs=outputs_disc, name="DeepfakeDetector")
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['binary_accuracy'])
+    model.summary()
+    return model
+
 def CNNModelV2():
     inputs_disc = x = tf.keras.Input(shape=(192, 256, 3,))
     #x = layers.experimental.preprocessing.RandomFlip()(x, training=True)

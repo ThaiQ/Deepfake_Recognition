@@ -132,6 +132,20 @@ def getValidationData():
             batch[0].append(imgarr)
     return batch
 
+def getV2ValidationData():
+    batch = [[], []]
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/valid/fake')]
+    for image in images:
+        img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/V2/valid/fake/' + image)
+        imgarr = tf.keras.preprocessing.image.img_to_array(img)
+        batch[1].append(imgarr)
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/valid/real')]
+    for image in images:
+        img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/V2/valid/real/' + image)
+        imgarr = tf.keras.preprocessing.image.img_to_array(img)
+        batch[0].append(imgarr)
+    return batch
+
 def createOneBatch(realfolder, fakefolder):
     batch = [[], []]
     images = [f for f in listdir('C:/SSD_Dataset/Images/Training/Real/' + realfolder)]
@@ -149,3 +163,17 @@ def createOneBatch(realfolder, fakefolder):
         batch[0].append(imgarr)
         batch[1].append(1)
     return batch
+
+def getV2DataRandomized():
+    array = []
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/train/fake')]
+    for image in images:
+        array.append(['C:/SSD_Dataset/Images/V2/train/fake/' + image, 1])
+            
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/train/real')]
+    for image in images:
+        array.append(['C:/SSD_Dataset/Images/V2/train/real/' + image, 0])
+
+    array = np.array(array)
+    np.random.shuffle(array)
+    return array

@@ -2,18 +2,16 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.keras import layers
 from tensorflow.python.training.tracking import base
-from getData import getDataset, getOneImagePerFolder, getDataRandomized, generateBatch, getValidationData, createOneBatch
-from models import sigmoidModel, reluModel
+from getData import getDataset, getOneImagePerFolder, getDataRandomized, generateBatch, getValidationData, createOneBatch, getV2DataRandomized, getV2ValidationData
+from models import sigmoidModel, reluModel, relu256Model
 from os import listdir
-def defineModel():
-    return reluModel()
 
 def getDataFromList(filelist):
     dataset = []
     for file in filelist:
         img = tf.keras.preprocessing.image.load_img(file)
         imgarr = tf.keras.preprocessing.image.img_to_array(img)
-        imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='nearest')
+        #imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='nearest')
         dataset.append(imgarr)
     return np.array(dataset)
 
@@ -62,34 +60,49 @@ def findRatio(y):
 #     model.save('Deepfake_Detector_Model_Batches_Real_Corresponding_Fake_No_Exp_Layers.h5')
 #     return model
 
+#BEST so far
+# def trainModel(model):
+#     i = 0
+#     dat = getDataRandomized()
+#     while (i < 10):
+#         batch = dat[np.random.randint(dat.shape[0], size=10000), :]
+#         X = getDataFromList(batch[:,0])
+#         y = batch[:,1].astype(np.float)
+#         ratio = findRatio(y)
+#         print(ratio)
+#         model.fit(X, y, epochs=10, batch_size=1000,class_weight={1:.90 * ratio, 0:(1 - (.90 * ratio))}, validation_split=.1, validation_batch_size=500, shuffle=True, steps_per_epoch = 5)
+#         i += 1
+#     model.save('Deepfake_Detector_Model.h5')
+#     return model
 
 def trainModel(model):
     i = 0
-    dat = getDataRandomized()
+    dat = getV2DataRandomized()
     while (i < 10):
-        batch = dat[np.random.randint(dat.shape[0], size=10000), :]
+        batch = dat[10000 * i:10000 * (i + 1)]
         X = getDataFromList(batch[:,0])
         y = batch[:,1].astype(np.float)
         ratio = findRatio(y)
         print(ratio)
-        model.fit(X, y, epochs=10, batch_size=1000,class_weight={1:.95 * ratio, 0:(1 - (.95 * ratio))}, validation_split=.1, validation_batch_size=500, shuffle=True, steps_per_epoch = 10)
+        model.fit(X, y, epochs=10, batch_size=1000, shuffle=True, steps_per_epoch = 10)
         i += 1
     model.save('Deepfake_Detector_Model.h5')
     return model
 
 def loadModel():
-    return tf.keras.models.load_model('BEST_BALANCED_Deepfake_Detector_Model_Batches_Real_Corresponding_Fake_No_Exp_Layers.h5')
+    return tf.keras.models.load_model('Deepfake_Detector_Model.h5')
 
 #Mode 0 evaluates with one image from each folder in training data, mode 1 evaluates with separate validation dataset
 def evaluateModel(model, mode):
-    evaluateConfusion(model, mode)
     #model.summary()
     if (mode == 0):
         dataset = getOneImagePerFolder()
     elif (mode == 1):
         dataset = getValidationData()
-    X1 = np.array(dataset[0])
-    X2 = np.array(dataset[1])
+    elif(mode == 2):
+        dataset = getV2ValidationData()
+    X1 = np.array(dataset[1])
+    X2 = np.array(dataset[0])
     fake_preds = model.predict(X1, batch_size=32)
     real_preds = model.predict(X2, batch_size=32)
 
@@ -104,19 +117,6 @@ def evaluateModel(model, mode):
         if value < .5:
             count += 1
     print("Real Image Accuracy: " + str(float(count / len(real_preds))))
-
-
-#Mode 0 evaluates with one image from each folder in training data, mode 1 evaluates with separate validation dataset
-def evaluateConfusion(model, mode):
-    #model.summary()
-    if (mode == 0):
-        dataset = getOneImagePerFolder()
-    elif (mode == 1):
-        dataset = getValidationData()
-    X1 = np.array(dataset[0])
-    X2 = np.array(dataset[1])
-    fake_preds = model.predict(X1, batch_size=32)
-    real_preds = model.predict(X2, batch_size=32)
 
     TP = 0
     FP = 0
@@ -138,8 +138,7 @@ def evaluateConfusion(model, mode):
     print("False Negatives: " + str(FN))
     print("True Negatives (Real): " + str(TN))
 
-evaluateModel(trainModel(defineModel()), 1)
-#evaluateConfusion(loadModel(), 1)
-#evaluateModel(loadModel(), 1)
+#evaluateModel(trainModel(relu256Model()), 2)
+evaluateModel(loadModel(), 2)
 
 print("Done")
