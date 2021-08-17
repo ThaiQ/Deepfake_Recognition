@@ -53,7 +53,7 @@ def getOneImagePerFolder():
         if len(images) > 0:
             img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/Training/Fake/' + folder + '/' + images[0])
             imgarr = tf.keras.preprocessing.image.img_to_array(img)
-            imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='bilinear')
+            imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (256, 256), interpolation='bilinear')
             dataset[0].append(imgarr)
         else:
             continue
@@ -63,7 +63,7 @@ def getOneImagePerFolder():
         if len(images) > 0:
             img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/Training/Real/' + folder + '/' + images[0])
             imgarr = tf.keras.preprocessing.image.img_to_array(img)
-            imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='bilinear')
+            imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (256, 256), interpolation='bilinear')
             dataset[1].append(imgarr)
         else:
             continue
@@ -120,7 +120,7 @@ def getValidationData():
         for image in images:
             img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/Validation/Real/' + folder + '/' + image)
             imgarr = tf.keras.preprocessing.image.img_to_array(img)
-            imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='bilinear')
+            imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (256, 256), interpolation='bilinear')
             batch[1].append(imgarr)
     folders = [f for f in listdir('C:/SSD_Dataset/Images/Validation/Fake/')]
     for folder in folders:
@@ -128,7 +128,7 @@ def getValidationData():
         for image in images:
             img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/Validation/Fake/' + folder + '/' + image)
             imgarr = tf.keras.preprocessing.image.img_to_array(img)
-            imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='bilinear')
+            imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (256, 256), interpolation='bilinear')
             batch[0].append(imgarr)
     return batch
 

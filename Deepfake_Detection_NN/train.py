@@ -77,20 +77,20 @@ def findRatio(y):
 
 def trainModel(model):
     i = 0
-    dat = getV2DataRandomized()
+    dat = getV2DataRandomized() #Loads the file locations of every image in the dataset
     while (i < 10):
-        batch = dat[10000 * i:10000 * (i + 1)]
+        batch = dat[10000 * i:10000 * (i + 1)] #Selects 10000 images
         X = getDataFromList(batch[:,0])
         y = batch[:,1].astype(np.float)
         ratio = findRatio(y)
         print(ratio)
-        model.fit(X, y, epochs=10, batch_size=1000, shuffle=True, steps_per_epoch = 10)
+        model.fit(X, y, epochs=10, batch_size=1000, shuffle=True, steps_per_epoch = 10, class_weight={1:.46, 0:.54})
         i += 1
     model.save('Deepfake_Detector_Model.h5')
     return model
 
 def loadModel():
-    return tf.keras.models.load_model('Deepfake_Detector_Model.h5')
+    return tf.keras.models.load_model('92_97_Deepfake_Detector_Model.h5')
 
 #Mode 0 evaluates with one image from each folder in training data, mode 1 evaluates with separate validation dataset
 def evaluateModel(model, mode):
@@ -138,7 +138,7 @@ def evaluateModel(model, mode):
     print("False Negatives: " + str(FN))
     print("True Negatives (Real): " + str(TN))
 
-#evaluateModel(trainModel(relu256Model()), 2)
-evaluateModel(loadModel(), 2)
+evaluateModel(trainModel(relu256Model()), 2)
+#evaluateModel(loadModel(), 2)
 
 print("Done")
