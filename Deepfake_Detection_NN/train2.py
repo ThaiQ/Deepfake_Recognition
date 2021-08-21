@@ -44,4 +44,4 @@ cnn.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
 cnn.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 cnn.fit(x = training_set, validation_data = test_set, epochs = 100)
 
-cnn.save('Deepfake_Detector_Model.h5')
+cnn.save('Deepfake_Detector_Model_from_train2.h5')
