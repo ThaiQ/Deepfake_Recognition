@@ -132,18 +132,14 @@ def getValidationData():
             batch[0].append(imgarr)
     return batch
 
-def getValidationData_w_conf(dir_validation='C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/valid', resize_target=(64, 64)):
+def getValidationData_path(dir_validation='C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/valid', resize_target=(64, 64)):
     batch = [[], []]
     images = [f for f in listdir(dir_validation+'/fake')]
     for image in images:
-        img = tf.keras.preprocessing.image.load_img(dir_validation+'/fake/' + image, target_size = resize_target)
-        imgarr = tf.keras.preprocessing.image.img_to_array(img)
-        batch[1].append(imgarr)
+        batch[0].append(dir_validation+'/fake/' + image)
     images = [f for f in listdir(dir_validation+'/real')]
     for image in images:
-        img = tf.keras.preprocessing.image.load_img(dir_validation+'/real/' + image, target_size = resize_target)
-        imgarr = tf.keras.preprocessing.image.img_to_array(img)
-        batch[0].append(imgarr)
+        batch[1].append(dir_validation+'/real/' + image)
     return batch
 
 def getV2ValidationData():
