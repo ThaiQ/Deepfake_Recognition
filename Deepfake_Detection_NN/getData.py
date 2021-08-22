@@ -132,6 +132,16 @@ def getValidationData():
             batch[0].append(imgarr)
     return batch
 
+def getValidationData_path(dir_validation='C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/valid', resize_target=(64, 64)):
+    batch = [[], []]
+    images = [f for f in listdir(dir_validation+'/fake')]
+    for image in images:
+        batch[0].append(dir_validation+'/fake/' + image)
+    images = [f for f in listdir(dir_validation+'/real')]
+    for image in images:
+        batch[1].append(dir_validation+'/real/' + image)
+    return batch
+
 def getV2ValidationData():
     batch = [[], []]
     images = [f for f in listdir('C:/SSD_Dataset/Images/V2/valid/fake')]
