@@ -29,7 +29,7 @@ def test(model, folder):
     # Recreate the exact same model, including its weights and the optimizer
     cnn = tf.keras.models.load_model(model)
     # Show the model architecture
-    cnn.summary()
+    #cnn.summary()
     print(training_set.class_indices)
 
     batches = getValidationData_path('C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/'+folder)
@@ -41,13 +41,20 @@ def test(model, folder):
         current+=1
         test_image = tf.keras.preprocessing.image.load_img(fake, target_size = (256, 256))
         test_image = tf.keras.preprocessing.image.img_to_array(test_image)
+        test_image = (test_image.astype(np.float))/255.0
+        #test_image = tf.keras.applications.resnet50.preprocess_input(test_image)
         test_image = np.expand_dims(test_image, axis = 0)
         result = cnn.predict(test_image)
         prediction = 'n/a'
-        if result[0][0] == 0:
+        if 'david' in model and result[0][0] > 0.5:
             prediction = 'fake'
             positive_fake += 1
-        else:
+        elif 'david' in model and result[0][0] < 0.5:
+            prediction = 'real'
+        elif 'thai' in model and result[0][0] < 0.5:
+            prediction = 'fake'
+            positive_fake += 1
+        elif 'thai' in model and result[0][0] > 0.5:
             prediction = 'real'
         print('Prediction: {}, expected: {}, status: {}/{}'.format(prediction,'fake',current,length))
 
@@ -56,12 +63,18 @@ def test(model, folder):
         current+=1
         test_image = tf.keras.preprocessing.image.load_img(real, target_size = (256, 256))
         test_image = tf.keras.preprocessing.image.img_to_array(test_image)
+        test_image = (test_image.astype(np.float))/255.0
         test_image = np.expand_dims(test_image, axis = 0)
         result = cnn.predict(test_image)
         prediction = 'n/a'
-        if result[0][0] == 0:
+        if 'david' in model and result[0][0] > 0.5:
             prediction = 'fake'
-        else:
+        elif 'david' in model and result[0][0] < 0.5:
+            prediction = 'real'
+            positive_real += 1
+        if 'thai' in model and result[0][0] < 0.5:
+            prediction = 'fake'
+        elif 'thai' in model and result[0][0] > 0.5:
             prediction = 'real'
             positive_real += 1
         print('Prediction: {}, expected: {}, status: {}/{}'.format(prediction,'real',current,length))

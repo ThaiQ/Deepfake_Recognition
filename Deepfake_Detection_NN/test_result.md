@@ -3,11 +3,11 @@
 93_Deepfake_Detector_Model_from_train2_thai.h5 with valid
 ===================================================================
 Result:
-positive_fake / total_fake: 3978 / 10000
-accuracy_fake: 39.78%
+positive_fake / total_fake: 9165 / 10000
+accuracy_fake: 91.64999999999999%
 
-positive_real / total_real: 9839 / 10000
-accuracy_real: 98.39%
+positive_real / total_real: 9511 / 10000
+accuracy_real: 95.11%
 ====================================================================
 
     
@@ -15,11 +15,11 @@ accuracy_real: 98.39%
 95_Deepfake_Detector_Model_from_train2_thai.h5 with valid
 ===================================================================
 Result:
-positive_fake / total_fake: 0 / 10000
-accuracy_fake: 0.0%
+positive_fake / total_fake: 9269 / 10000
+accuracy_fake: 92.69%
 
-positive_real / total_real: 10000 / 10000
-accuracy_real: 100.0%
+positive_real / total_real: 9816 / 10000
+accuracy_real: 98.16%
 ====================================================================
 
     
@@ -27,11 +27,11 @@ accuracy_real: 100.0%
 98_99_V2_Deepfake_Detector_Model_david.h5 with test
 ===================================================================
 Result:
-positive_fake / total_fake: 0 / 10000
-accuracy_fake: 0.0%
+positive_fake / total_fake: 9552 / 10000
+accuracy_fake: 95.52000000000001%
 
-positive_real / total_real: 9999 / 10000
-accuracy_real: 99.99%
+positive_real / total_real: 9886 / 10000
+accuracy_real: 98.86%
 ====================================================================
 
     
@@ -39,11 +39,11 @@ accuracy_real: 99.99%
 93_Deepfake_Detector_Model_from_train2_thai.h5 with test
 ===================================================================
 Result:
-positive_fake / total_fake: 4032 / 10000
-accuracy_fake: 40.32%
+positive_fake / total_fake: 9176 / 10000
+accuracy_fake: 91.75999999999999%
 
-positive_real / total_real: 9844 / 10000
-accuracy_real: 98.44000000000001%
+positive_real / total_real: 9508 / 10000
+accuracy_real: 95.08%
 ====================================================================
 
     
@@ -51,11 +51,11 @@ accuracy_real: 98.44000000000001%
 95_Deepfake_Detector_Model_from_train2_thai.h5 with test
 ===================================================================
 Result:
-positive_fake / total_fake: 0 / 10000
-accuracy_fake: 0.0%
+positive_fake / total_fake: 9252 / 10000
+accuracy_fake: 92.52%
 
-positive_real / total_real: 10000 / 10000
-accuracy_real: 100.0%
+positive_real / total_real: 9814 / 10000
+accuracy_real: 98.14%
 ====================================================================
 
     
@@ -63,11 +63,11 @@ accuracy_real: 100.0%
 98_99_V2_Deepfake_Detector_Model_david.h5 with valid
 ===================================================================
 Result:
-positive_fake / total_fake: 0 / 10000
-accuracy_fake: 0.0%
+positive_fake / total_fake: 9572 / 10000
+accuracy_fake: 95.72%
 
-positive_real / total_real: 9997 / 10000
-accuracy_real: 99.97%
+positive_real / total_real: 9895 / 10000
+accuracy_real: 98.95%
 ====================================================================
 
     
