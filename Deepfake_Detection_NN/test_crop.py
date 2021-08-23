@@ -4,9 +4,9 @@ import cv2
 from utils.opencv_face_detection import cv2_face_cropper
 
 #vairables
-path_to_img = 'C:/Users/thai/Downloads/small_test_set/test/fake/00F8LKY6JC.jpg'
+path_to_img = './test_data/fake_real_from_validation.jpg'
 image_resize_value = (256,256)
-model = '93_Deepfake_Detector_Model_from_train2_thai.h5'
+model = '98_99_V2_Deepfake_Detector_Model_david.h5'
 
 #get faces array
 face_cropper = cv2_face_cropper()
