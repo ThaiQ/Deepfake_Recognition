@@ -2,18 +2,9 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.keras import layers
 from tensorflow.python.training.tracking import base
-from getData import getDataset, getOneImagePerFolder, getDataRandomized, generateBatch, getValidationData, createOneBatch, getV2DataRandomized, getV2ValidationData
+from getData import *
 from models import sigmoidModel, reluModel, relu256Model
 from os import listdir
-
-def getDataFromList(filelist):
-    dataset = []
-    for file in filelist:
-        img = tf.keras.preprocessing.image.load_img(file)
-        imgarr = tf.keras.preprocessing.image.img_to_array(img)
-        #imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='nearest')
-        dataset.append(imgarr)
-    return np.array(dataset)
 
 def findRatio(y):
     count = 0
@@ -79,18 +70,19 @@ def trainModel(model):
     i = 0
     dat = getV2DataRandomized() #Loads the file locations of every image in the dataset
     while (i < 10):
-        batch = dat[10000 * i:10000 * (i + 1)] #Selects 10000 images
-        X = getDataFromList(batch[:,0])
-        y = batch[:,1].astype(np.float)
+        batch = getDataFromListCropped(dat[10000 * i:10000 * (i + 1)]) #Selects 10000 images
+        print(len(batch[0]))
+        X = np.array(batch[0])
+        y = np.array(batch[1])
         ratio = findRatio(y)
         print(ratio)
-        model.fit(X, y, epochs=10, batch_size=1000, shuffle=True, steps_per_epoch = 10, class_weight={1:.46, 0:.54})
-        i += 1
-    model.save('Deepfake_Detector_Model.h5')
+        model.fit(X, y, epochs=10, batch_size=1000, shuffle=True, steps_per_epoch = 10, class_weight={1:ratio, 0:(1 - ratio)})
+        i += 1 
+    model.save('Deepfake_Detector_Model_Crops.h5')
     return model
 
 def loadModel():
-    return tf.keras.models.load_model('92_97_Deepfake_Detector_Model.h5')
+    return tf.keras.models.load_model('Deepfake_Detector_Model_Crops.h5')
 
 #Mode 0 evaluates with one image from each folder in training data, mode 1 evaluates with separate validation dataset
 def evaluateModel(model, mode):
@@ -101,6 +93,12 @@ def evaluateModel(model, mode):
         dataset = getValidationData()
     elif(mode == 2):
         dataset = getV2ValidationData()
+    elif(mode == 3):
+        dataset = getV2TestData()
+    elif(mode == 4):
+        dataset = getV3ValidationData()
+    elif(mode == 5):
+        dataset = getV2ValidationDataCropped()
     X1 = np.array(dataset[1])
     X2 = np.array(dataset[0])
     fake_preds = model.predict(X1, batch_size=32)
@@ -138,7 +136,7 @@ def evaluateModel(model, mode):
     print("False Negatives: " + str(FN))
     print("True Negatives (Real): " + str(TN))
 
-evaluateModel(trainModel(relu256Model()), 2)
-#evaluateModel(loadModel(), 2)
+#evaluateModel(trainModel(relu256Model()), 5)
+evaluateModel(loadModel(), 5)
 
 print("Done")

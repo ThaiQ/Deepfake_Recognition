@@ -2,6 +2,8 @@ from os import listdir
 from os.path import isfile, join
 import tensorflow as tf
 import numpy as np
+import cv2
+from utils.opencv_face_detection import cv2_face_cropper
 
 def getDataset(numimages, startnum):
     dataset = [[], []]
@@ -156,6 +158,55 @@ def getV2ValidationData():
         batch[0].append(imgarr)
     return batch
 
+def getV2ValidationDataCropped():
+    face_cropper = cv2_face_cropper()
+    dataset = [[], []]
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/valid/fake')]
+    for image in images:
+        faces = face_cropper.getfaces_withCord('C:/SSD_Dataset/Images/V2/valid/fake/' + image)
+        if len(faces[0]) == 1:
+            test_image = cv2.resize(faces[0][0]['img'], (256, 256))
+            test_image = (test_image)/255.0
+            dataset[1].append(test_image)
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/valid/real')]
+    for image in images:
+        faces = face_cropper.getfaces_withCord('C:/SSD_Dataset/Images/V2/valid/real/' + image)
+        if len(faces[0]) == 1:
+            test_image = cv2.resize(faces[0][0]['img'], (256, 256))
+            test_image = (test_image)/255.0
+            dataset[0].append(test_image)
+    return dataset
+
+def getV3ValidationData():
+    batch = [[], []]
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V3/real_and_fake_face/training_fake')]
+    for image in images:
+        img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/V3/real_and_fake_face/training_fake/' + image)
+        imgarr = tf.keras.preprocessing.image.img_to_array(img)
+        imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (256, 256), interpolation='bilinear')
+        batch[1].append(imgarr)
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V3/real_and_fake_face/training_real')]
+    for image in images:
+        img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/V3/real_and_fake_face/training_real/' + image)
+        imgarr = tf.keras.preprocessing.image.img_to_array(img)
+        imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (256, 256), interpolation='bilinear')
+        batch[0].append(imgarr)
+    return batch
+
+def getV2TestData():
+    batch = [[], []]
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/test/fake')]
+    for image in images:
+        img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/V2/test/fake/' + image)
+        imgarr = tf.keras.preprocessing.image.img_to_array(img)
+        batch[1].append(imgarr)
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/test/real')]
+    for image in images:
+        img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/V2/test/real/' + image)
+        imgarr = tf.keras.preprocessing.image.img_to_array(img)
+        batch[0].append(imgarr)
+    return batch
+
 def createOneBatch(realfolder, fakefolder):
     batch = [[], []]
     images = [f for f in listdir('C:/SSD_Dataset/Images/Training/Real/' + realfolder)]
@@ -187,3 +238,39 @@ def getV2DataRandomized():
     array = np.array(array)
     np.random.shuffle(array)
     return array
+
+def getV2DataRandomizedCropped():
+    array = []
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/train/fake')]
+    for image in images:
+        array.append(['C:/SSD_Dataset/Images/V2/train/fake/' + image, 1])
+            
+    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/train/real')]
+    for image in images:
+        array.append(['C:/SSD_Dataset/Images/V2/train/real/' + image, 0])
+
+    array = np.array(array)
+    np.random.shuffle(array)
+    return array
+
+def getDataFromList(filelist):
+    dataset = []
+    for file in filelist:
+        img = tf.keras.preprocessing.image.load_img(file)
+        imgarr = tf.keras.preprocessing.image.img_to_array(img)
+        #imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (192, 256), interpolation='nearest')
+        dataset.append(imgarr)
+    return np.array(dataset)
+
+def getDataFromListCropped(filelist):
+    face_cropper = cv2_face_cropper()
+    dataset = [[], []]
+    for file in filelist:
+        faces = face_cropper.getfaces_withCord(file[0])
+        if len(faces[0]) == 1:
+            test_image = cv2.resize(faces[0][0]['img'], (256, 256))
+            test_image = (test_image)/255.0
+            dataset[0].append(test_image)
+            dataset[1].append(file[1].astype(np.float))
+    return dataset
+
