@@ -27,6 +27,30 @@ class cv2_face_cropper():
 
         return result_faces
     
+    def getfaces_withCord(self,img_path):
+        #load image
+        img = cv2.imread(img_path)
+        #detect face but only in gray scale
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        faces = self.face_cascade.detectMultiScale(
+            image=gray, 
+            scaleFactor = 1.1,
+            minNeighbors = 4)
+
+        #Processing faces and save to return array
+        result_faces = []
+        for (x, y, w, h) in faces:
+            #crop images
+            crop = img[y:y+h, x:x+w]
+            result_faces.append({
+                'img': crop,
+                'x' : x,
+                'y' : y,
+                'w' : w,
+                'h' : h,
+            })
+        return result_faces, img
+    
     def display_faces(self, faces):
         ind=0
         for face in faces:
