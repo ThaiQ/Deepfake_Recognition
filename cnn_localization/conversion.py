@@ -47,4 +47,4 @@ def main(dir = 'C:/Users/thai/Downloads/small_test_set/test'):
     return
 
 #execute
-main(dir = 'C:/Users/thai/Downloads/small_test_set/test')
+main(dir = 'C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/train')
