@@ -66,39 +66,78 @@ def findRatio(y):
 #     model.save('Deepfake_Detector_Model.h5')
 #     return model
 
-def trainModel(model):
+def trainV1(model):
+    dat = getDataRandomized() #Loads the file locations of every image in the dataset
     i = 0
-    dat = getV2DataRandomized() #Loads the file locations of every image in the dataset
     while (i < 10):
+        print("Batch number " + str(i + 1))
         batch = getDataFromListCropped(dat[10000 * i:10000 * (i + 1)]) #Selects 10000 images
         print(len(batch[0]))
         X = np.array(batch[0])
         y = np.array(batch[1])
         ratio = findRatio(y)
         print(ratio)
-        model.fit(X, y, epochs=10, batch_size=1000, shuffle=True, steps_per_epoch = 10, class_weight={1:ratio, 0:(1 - ratio)})
+        model.fit(X, y, epochs=3, batch_size=1000, shuffle=True, steps_per_epoch = 10, class_weight={1:(1.5 * ratio), 0:(1 - (1.5 * ratio))})
         i += 1 
-    model.save('Deepfake_Detector_Model_Crops.h5')
+    #model.save('Deepfake_Detector_Model_Crops.h5')
+    return model
+
+def trainV2(model):
+    i = 0
+    dat = getV2DataRandomized() #Loads the file locations of every image in the dataset
+    while (i < 10):
+        print("Batch number " + str(i + 1))
+        batch = getDataFromListCropped(dat[10000 * i:10000 * (i + 1)]) #Selects 10000 images
+        print(len(batch[0]))
+        X = np.array(batch[0])
+        y = np.array(batch[1])
+        ratio = findRatio(y)
+        print(ratio)
+        model.fit(X, y, epochs=10, batch_size=1000, shuffle=True, steps_per_epoch = 10, class_weight={1:(1.1 * ratio), 0:(1 - (1.1 * ratio))})
+        i += 1 
+    #model.save('Deepfake_Detector_Model_Crops.h5')
+    return model
+
+def trainCombined(model):
+    i = 0
+    dat = getCombinedDatasetRandomized()
+    while (i < int((len(dat) / 10000)) + 1):
+        print("Batch number " + str(i + 1))
+        if (i < int((len(dat) / 10000))):
+            batch = getDataFromList(dat[10000 * i:10000 * (i + 1)]) #Selects 10000 images
+        else:
+            batch = getDataFromList(dat[10000 * i:len(dat)]) #Selects 10000 images
+        print(len(batch[0]))
+        X = np.array(batch[0])
+        y = np.array(batch[1])
+        ratio = findRatio(y)
+        print(ratio)
+        model.fit(X, y, epochs=1, batch_size=1000, shuffle=True, steps_per_epoch = 10, class_weight={1:.80, 0:.20})
+        i += 1 
+    model.save('step4_Deepfake_Detector_Model_Combined.h5')
     return model
 
 def loadModel():
-    return tf.keras.models.load_model('Deepfake_Detector_Model_Crops.h5')
+    return tf.keras.models.load_model('step3_Deepfake_Detector_Model_Combined.h5')
 
 #Mode 0 evaluates with one image from each folder in training data, mode 1 evaluates with separate validation dataset
 def evaluateModel(model, mode):
     #model.summary()
     if (mode == 0):
         dataset = getOneImagePerFolder()
+        print("Validating with V1 dataset")
     elif (mode == 1):
         dataset = getValidationData()
+        print("Validating with V1 dataset")
     elif(mode == 2):
         dataset = getV2ValidationData()
+        print("Validating with V2 dataset")
     elif(mode == 3):
         dataset = getV2TestData()
+        print("Validating with V2 dataset")
     elif(mode == 4):
         dataset = getV3ValidationData()
-    elif(mode == 5):
-        dataset = getV2ValidationDataCropped()
+        print("Validating with V3 dataset")
     X1 = np.array(dataset[1])
     X2 = np.array(dataset[0])
     fake_preds = model.predict(X1, batch_size=32)
@@ -135,8 +174,14 @@ def evaluateModel(model, mode):
     print("False Positives: " + str(FP))
     print("False Negatives: " + str(FN))
     print("True Negatives (Real): " + str(TN))
+    return model
 
-#evaluateModel(trainModel(relu256Model()), 5)
-evaluateModel(loadModel(), 5)
+#evaluateModel(trainV2(relu256Model()), 5)
+#evaluateModel(evaluateModel(trainV1(trainV2(relu256Model())), 1), 2)
+#evaluateModel(evaluateModel(loadModel(), 2), 1)
+evaluateModel(evaluateModel(trainCombined(loadModel()), 2), 1)
+#evaluateModel(evaluateModel(trainV1(loadModel()), 2), 1)
+
+#cropImages()
 
 print("Done")
