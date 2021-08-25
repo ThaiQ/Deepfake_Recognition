@@ -178,11 +178,11 @@ def evaluateModel(model, mode):
     return model
 
 def evaluateEnsemble():
-    M1 = tf.keras.models.load_model('V1_80_89_V2_81_98_Deepfake_Detector_Model_Combined.h5')
-    M2 = tf.keras.models.load_model('V1_82_83_V2_85_98_Deepfake_Detector_Model_Combined.h5')
-    M3 = tf.keras.models.load_model('V1_85_81_V2_87_97_Deepfake_Detector_Model_Combined.h5')
-    M4 = tf.keras.models.load_model('V1_86_66_V2_92_96_Deepfake_Detector_Model_Combined.h5')
-    M5 = tf.keras.models.load_model('V1_91_73_V2_88_98_Deepfake_Detector_Model_Combined.h5')
+    M1 = tf.keras.models.load_model('M1.h5')
+    M2 = tf.keras.models.load_model('M2.h5')
+    M3 = tf.keras.models.load_model('M3.h5')
+    M4 = tf.keras.models.load_model('M4.h5')
+    M5 = tf.keras.models.load_model('M5.h5')
     
     dataset1 = getValidationData()
     dataset2 = getV2ValidationData()
