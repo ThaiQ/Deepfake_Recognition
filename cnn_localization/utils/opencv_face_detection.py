@@ -67,3 +67,10 @@ def display_keras_imageGenerator(image_set):
     print(img.shape, label)   #  (1,256,256,3)
     plt.imshow(img[0])
     plt.show()
+
+def getRatio(labels_list,type=1):
+    count = 0
+    for label in labels_list:
+        if label == type:
+            count += 1
+    return (count/len(labels_list))
