@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow.keras.layers import layers
+from tensorflow.keras import layers
 
 def get_cnn_localization_model(image_shape=(100,100,3)):
     inputs = tf.keras.Input(shape=image_shape)
@@ -26,9 +26,9 @@ def get_cnn_localization_model(image_shape=(100,100,3)):
     regbox_head = layers.Dropout(0.3)(x)
     regbox_head = layers.Dense(units=128, activation='relu')(regbox_head)
     regbox_head = layers.Dense(units=64, activation='relu')(regbox_head)
-    regbox_head = layers.Dense(units=1, activation='sigmoid')(regbox_head)
+    regbox_head = layers.Dense(units=4, activation='sigmoid')(regbox_head)
 
-    model = tf.keras.model(inputs=[inputs], outputs=[classifier_head,regbox_head])
+    model = tf.keras.Model(inputs=[inputs], outputs=[classifier_head,regbox_head])
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['binary_accuracy'])
     model.summary()
     return model
