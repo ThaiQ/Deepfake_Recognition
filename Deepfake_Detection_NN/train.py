@@ -5,6 +5,7 @@ from tensorflow.python.training.tracking import base
 from getData import *
 from models import sigmoidModel, reluModel, relu256Model
 from os import listdir
+from statistics import mean
 
 def findRatio(y):
     count = 0
@@ -112,7 +113,7 @@ def trainCombined(model):
         y = np.array(batch[1])
         ratio = findRatio(y)
         print(ratio)
-        model.fit(X, y, epochs=1, batch_size=1000, shuffle=True, steps_per_epoch = 10, class_weight={1:.80, 0:.20})
+        model.fit(X, y, epochs=1, batch_size=1000, shuffle=True, steps_per_epoch = 10, class_weight={1:.85, 0:.15})
         i += 1 
     model.save('step4_Deepfake_Detector_Model_Combined.h5')
     return model
@@ -176,12 +177,126 @@ def evaluateModel(model, mode):
     print("True Negatives (Real): " + str(TN))
     return model
 
+def evaluateEnsemble():
+    M1 = tf.keras.models.load_model('V1_80_89_V2_81_98_Deepfake_Detector_Model_Combined.h5')
+    M2 = tf.keras.models.load_model('V1_82_83_V2_85_98_Deepfake_Detector_Model_Combined.h5')
+    M3 = tf.keras.models.load_model('V1_85_81_V2_87_97_Deepfake_Detector_Model_Combined.h5')
+    M4 = tf.keras.models.load_model('V1_86_66_V2_92_96_Deepfake_Detector_Model_Combined.h5')
+    M5 = tf.keras.models.load_model('V1_91_73_V2_88_98_Deepfake_Detector_Model_Combined.h5')
+    
+    dataset1 = getValidationData()
+    dataset2 = getV2ValidationData()
+
+    X1 = np.array(dataset1[1]) #Fakes from dataset 1
+    X2 = np.array(dataset1[0]) #Reals from dataset 1
+    # X1 = np.array(dataset2[1]) #Fakes from dataset 2
+    # X2 = np.array(dataset2[0]) #Reals from dataset 2
+    fpred1 = M1.predict(X1, batch_size=32)
+    rpred1 = M1.predict(X2, batch_size=32)
+    fpred2 = M2.predict(X1, batch_size=32)
+    rpred2 = M2.predict(X2, batch_size=32)
+    fpred3 = M3.predict(X1, batch_size=32)
+    rpred3 = M3.predict(X2, batch_size=32)
+    fpred4 = M4.predict(X1, batch_size=32)
+    rpred4 = M4.predict(X2, batch_size=32)
+    fpred5 = M5.predict(X1, batch_size=32)
+    rpred5 = M5.predict(X2, batch_size=32)
+
+    fake_preds = []
+    real_preds = []
+    print("Validating V1 Dataset")
+    count = 0
+    for x in range(len(fpred1)):
+        fake_preds.append(round(mean([fpred1[x][0], fpred2[x][0], fpred3[x][0], fpred4[x][0], fpred5[x][0]])))
+        if fake_preds[x] > .5:
+            count += 1
+    print("Fake Image Accuracy: " + str(float(count / len(fpred1))))
+
+    count = 0
+    for x in range(len(rpred1)):
+        real_preds.append(round(mean([rpred1[x][0], rpred2[x][0], rpred3[x][0], rpred4[x][0], rpred5[x][0]])))
+        if real_preds[x] <= .5:
+            count += 1
+    print("Real Image Accuracy: " + str(float(count / len(rpred1))))
+
+    TP = 0
+    FP = 0
+    FN = 0
+    TN = 0
+    for value in fake_preds:
+        if value > .5:
+            TP += 1
+        else:
+            FN += 1
+
+    for value in real_preds:
+        if value < .5:
+            TN += 1
+        else:
+            FP += 1
+    print("True Positives (Fake): " + str(TP))
+    print("False Positives: " + str(FP))
+    print("False Negatives: " + str(FN))
+    print("True Negatives (Real): " + str(TN))
+
+    X1 = np.array(dataset2[1]) #Fakes from dataset 1
+    X2 = np.array(dataset2[0]) #Reals from dataset 1
+    # X1 = np.array(dataset2[1]) #Fakes from dataset 2
+    # X2 = np.array(dataset2[0]) #Reals from dataset 2
+    fpred1 = M1.predict(X1, batch_size=32)
+    rpred1 = M1.predict(X2, batch_size=32)
+    fpred2 = M2.predict(X1, batch_size=32)
+    rpred2 = M2.predict(X2, batch_size=32)
+    fpred3 = M3.predict(X1, batch_size=32)
+    rpred3 = M3.predict(X2, batch_size=32)
+    fpred4 = M4.predict(X1, batch_size=32)
+    rpred4 = M4.predict(X2, batch_size=32)
+    fpred5 = M5.predict(X1, batch_size=32)
+    rpred5 = M5.predict(X2, batch_size=32)
+
+    fake_preds = []
+    real_preds = []
+    print("Validating V2 Dataset")
+    count = 0
+    for x in range(len(fpred1)):
+        fake_preds.append(round(mean([fpred1[x][0], fpred2[x][0], fpred3[x][0], fpred4[x][0], fpred5[x][0]])))
+        if fake_preds[x] > .5:
+            count += 1
+    print("Fake Image Accuracy: " + str(float(count / len(fpred1))))
+
+    count = 0
+    for x in range(len(rpred1)):
+        real_preds.append(round(mean([rpred1[x][0], rpred2[x][0], rpred3[x][0], rpred4[x][0], rpred5[x][0]])))
+        if real_preds[x] <= .5:
+            count += 1
+    print("Real Image Accuracy: " + str(float(count / len(rpred1))))
+
+    TP = 0
+    FP = 0
+    FN = 0
+    TN = 0
+    for value in fake_preds:
+        if value > .5:
+            TP += 1
+        else:
+            FN += 1
+
+    for value in real_preds:
+        if value < .5:
+            TN += 1
+        else:
+            FP += 1
+    print("True Positives (Fake): " + str(TP))
+    print("False Positives: " + str(FP))
+    print("False Negatives: " + str(FN))
+    print("True Negatives (Real): " + str(TN))
+
 #evaluateModel(trainV2(relu256Model()), 5)
 #evaluateModel(evaluateModel(trainV1(trainV2(relu256Model())), 1), 2)
 #evaluateModel(evaluateModel(loadModel(), 2), 1)
-evaluateModel(evaluateModel(trainCombined(loadModel()), 2), 1)
+#evaluateModel(evaluateModel(trainCombined(loadModel()), 2), 1)
 #evaluateModel(evaluateModel(trainV1(loadModel()), 2), 1)
-
+evaluateEnsemble()
 #cropImages()
 
 print("Done")
