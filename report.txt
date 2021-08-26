@@ -1,0 +1,326 @@
+TensorFlow 2.0 Upgrade Script
+-----------------------------
+Converted 34 files
+Detected 0 issues that require attention
+--------------------------------------------------------------------------------
+================================================================================
+Detailed log follows:
+
+================================================================================
+================================================================================
+Input tree: 'SSD_Implement'
+================================================================================
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\training.py'
+ outputting to 'SSD_Implement_v2\\training.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\bounding_box_utils\\bounding_box_utils.py'
+ outputting to 'SSD_Implement_v2\\bounding_box_utils\\bounding_box_utils.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\bounding_box_utils\\__init__.py'
+ outputting to 'SSD_Implement_v2\\bounding_box_utils\\__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\data_generator\\data_augmentation_chain_constant_input_size.py'
+ outputting to 'SSD_Implement_v2\\data_generator\\data_augmentation_chain_constant_input_size.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\data_generator\\data_augmentation_chain_original_ssd.py'
+ outputting to 'SSD_Implement_v2\\data_generator\\data_augmentation_chain_original_ssd.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\data_generator\\data_augmentation_chain_satellite.py'
+ outputting to 'SSD_Implement_v2\\data_generator\\data_augmentation_chain_satellite.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\data_generator\\data_augmentation_chain_variable_input_size.py'
+ outputting to 'SSD_Implement_v2\\data_generator\\data_augmentation_chain_variable_input_size.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\data_generator\\object_detection_2d_data_generator.py'
+ outputting to 'SSD_Implement_v2\\data_generator\\object_detection_2d_data_generator.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\data_generator\\object_detection_2d_geometric_ops.py'
+ outputting to 'SSD_Implement_v2\\data_generator\\object_detection_2d_geometric_ops.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\data_generator\\object_detection_2d_image_boxes_validation_utils.py'
+ outputting to 'SSD_Implement_v2\\data_generator\\object_detection_2d_image_boxes_validation_utils.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\data_generator\\object_detection_2d_misc_utils.py'
+ outputting to 'SSD_Implement_v2\\data_generator\\object_detection_2d_misc_utils.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\data_generator\\object_detection_2d_patch_sampling_ops.py'
+ outputting to 'SSD_Implement_v2\\data_generator\\object_detection_2d_patch_sampling_ops.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\data_generator\\object_detection_2d_photometric_ops.py'
+ outputting to 'SSD_Implement_v2\\data_generator\\object_detection_2d_photometric_ops.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\data_generator\\__init__.py'
+ outputting to 'SSD_Implement_v2\\data_generator\\__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\eval_utils\\average_precision_evaluator.py'
+ outputting to 'SSD_Implement_v2\\eval_utils\\average_precision_evaluator.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\eval_utils\\coco_utils.py'
+ outputting to 'SSD_Implement_v2\\eval_utils\\coco_utils.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\eval_utils\\__init__.py'
+ outputting to 'SSD_Implement_v2\\eval_utils\\__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\keras_layers\\keras_layer_AnchorBoxes.py'
+ outputting to 'SSD_Implement_v2\\keras_layers\\keras_layer_AnchorBoxes.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\keras_layers\\keras_layer_DecodeDetections.py'
+ outputting to 'SSD_Implement_v2\\keras_layers\\keras_layer_DecodeDetections.py'
+--------------------------------------------------------------------------------
+
+146:33: INFO: Added keywords to args of function 'tf.cond'
+156:21: INFO: Added keywords to args of function 'tf.shape'
+157:18: INFO: Added keywords to args of function 'tf.shape'
+174:40: INFO: Added keywords to args of function 'tf.shape'
+174:69: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+208:35: INFO: Added keywords to args of function 'tf.cond'
+208:52: INFO: Added keywords to args of function 'tf.size'
+212:89: INFO: Added keywords to args of function 'tf.shape'
+244:74: INFO: Added keywords to args of function 'tf.shape'
+251:26: INFO: Added keywords to args of function 'tf.cond'
+251:51: INFO: Added keywords to args of function 'tf.shape'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\keras_layers\\keras_layer_DecodeDetectionsFast.py'
+ outputting to 'SSD_Implement_v2\\keras_layers\\keras_layer_DecodeDetectionsFast.py'
+--------------------------------------------------------------------------------
+
+126:35: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+126:47: INFO: Added keywords to args of function 'tf.argmax'
+128:22: INFO: Added keywords to args of function 'tf.reduce_max'
+128:22: INFO: Renamed keyword argument for tf.reduce_max from keep_dims to keepdims
+153:33: INFO: Added keywords to args of function 'tf.cond'
+162:21: INFO: Added keywords to args of function 'tf.shape'
+163:18: INFO: Added keywords to args of function 'tf.shape'
+187:38: INFO: Added keywords to args of function 'tf.cond'
+187:55: INFO: Added keywords to args of function 'tf.size'
+212:30: INFO: Added keywords to args of function 'tf.cond'
+212:47: INFO: Added keywords to args of function 'tf.size'
+227:74: INFO: Added keywords to args of function 'tf.shape'
+234:26: INFO: Added keywords to args of function 'tf.cond'
+234:51: INFO: Added keywords to args of function 'tf.shape'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\keras_layers\\keras_layer_L2Normalization.py'
+ outputting to 'SSD_Implement_v2\\keras_layers\\keras_layer_L2Normalization.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\keras_layers\\__init__.py'
+ outputting to 'SSD_Implement_v2\\keras_layers\\__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\keras_loss_function\\keras_ssd_loss.py'
+ outputting to 'SSD_Implement_v2\\keras_loss_function\\keras_ssd_loss.py'
+--------------------------------------------------------------------------------
+
+74:18: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+75:15: INFO: Added keywords to args of function 'tf.reduce_sum'
+95:20: INFO: Added keywords to args of function 'tf.reduce_sum'
+95:43: INFO: Renamed 'tf.log' to 'tf.math.log'
+128:21: INFO: Added keywords to args of function 'tf.shape'
+129:18: INFO: Added keywords to args of function 'tf.shape'
+133:30: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+134:28: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+140:20: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+140:32: INFO: Added keywords to args of function 'tf.reduce_max'
+143:21: INFO: Added keywords to args of function 'tf.reduce_sum'
+148:25: INFO: Added keywords to args of function 'tf.reduce_sum'
+154:23: INFO: Renamed 'tf.count_nonzero' to 'tf.math.count_nonzero'
+166:69: INFO: Changed tf.to_int32 call to tf.cast(..., dtype=tf.int32).
+187:49: INFO: Added keywords to args of function 'tf.shape'
+188:29: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+190:29: INFO: Added keywords to args of function 'tf.reduce_sum'
+193:25: INFO: Added keywords to args of function 'tf.cond'
+200:19: INFO: Added keywords to args of function 'tf.reduce_sum'
+209:34: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\keras_loss_function\\__init__.py'
+ outputting to 'SSD_Implement_v2\\keras_loss_function\\__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\misc_utils\\tensor_sampling_utils.py'
+ outputting to 'SSD_Implement_v2\\misc_utils\\tensor_sampling_utils.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\misc_utils\\__init__.py'
+ outputting to 'SSD_Implement_v2\\misc_utils\\__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\models\\keras_ssd300.py'
+ outputting to 'SSD_Implement_v2\\models\\keras_ssd300.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\models\\keras_ssd512.py'
+ outputting to 'SSD_Implement_v2\\models\\keras_ssd512.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\models\\keras_ssd7.py'
+ outputting to 'SSD_Implement_v2\\models\\keras_ssd7.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\models\\__init__.py'
+ outputting to 'SSD_Implement_v2\\models\\__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\ssd_encoder_decoder\\matching_utils.py'
+ outputting to 'SSD_Implement_v2\\ssd_encoder_decoder\\matching_utils.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\ssd_encoder_decoder\\ssd_input_encoder.py'
+ outputting to 'SSD_Implement_v2\\ssd_encoder_decoder\\ssd_input_encoder.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\ssd_encoder_decoder\\ssd_output_decoder.py'
+ outputting to 'SSD_Implement_v2\\ssd_encoder_decoder\\ssd_output_decoder.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'SSD_Implement\\ssd_encoder_decoder\\__init__.py'
+ outputting to 'SSD_Implement_v2\\ssd_encoder_decoder\\__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+

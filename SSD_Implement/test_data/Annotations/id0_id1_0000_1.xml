@@ -1,0 +1,26 @@
+<annotation>
+  <folder>C:/SSD_Dataset/Fake_Unlabeled_Images/id0_id1_0000</folder>
+  <filename>id0_id1_0000_1.jpg</filename>
+  <path>C:/SSD_Dataset/Fake_Unlabeled_Images/id0_id1_0000/id0_id1_0000_1.jpg</path>
+  <source>
+    <database>Unknown</database>
+  </source>
+  <size>
+    <width>944</width>
+    <height>500</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>fake</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>547</xmin>
+      <ymin>111</ymin>
+      <xmax>628</xmax>
+      <ymax>221</ymax>
+    </bndbox>
+  </object>
+</annotation>
