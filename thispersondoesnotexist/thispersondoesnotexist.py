@@ -34,10 +34,14 @@ while (i < image_counts + 1):
         f.write(checksum2+'\n')
 
         save_picture(picture, 'C:/SSD_Dataset/Combined_Dataset/Training/Fake/DNE_{}.jpg'.format(i))
-        picture = cropper.getfaces('C:/SSD_Dataset/Combined_Dataset/Training/Fake/DNE_{}.jpg'.format(i))[0]
-        picture = cv2.resize(picture, (256, 256))
-        cv2.imwrite('C:/SSD_Dataset/Combined_Dataset/Training/Fake/DNE_{}.jpg'.format(i), picture)
-        print('{} / {}'.format(i,image_counts))
-        i += 1
+        faces = cropper.getfaces('C:/SSD_Dataset/Combined_Dataset/Training/Fake/DNE_{}.jpg'.format(i))
+        if len(faces) == 1:
+            picture = faces[0]
+            picture = cv2.resize(picture, (256, 256))
+            cv2.imwrite('C:/SSD_Dataset/Combined_Dataset/Training/Fake/DNE_{}.jpg'.format(i), picture)
+            print('{} / {}'.format(i,image_counts))
+            i += 1
+        else:
+            os.remove('C:/SSD_Dataset/Combined_Dataset/Training/Fake/DNE_{}.jpg'.format(i))
 
 f.close()
