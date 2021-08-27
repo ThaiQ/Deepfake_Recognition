@@ -6,9 +6,9 @@ import cv2
 
 image_resize = (100,100) #(256,256)
 
-cnn = tf.keras.models.load_model('RCNN.h5')
+cnn = tf.keras.models.load_model('RCNN_97_test.h5')
 
-test_image, image_size_ratio = getImages_cropped(['C:/Users/thai/Downloads/small_test_set/train/fake/00A0WLZE5X.jpg'], image_resize)
+test_image, image_size_ratio = getImages_cropped(['C:/Users/thai/Downloads/small_test_set/test/fake/00F8LKY6JC.jpg'], image_resize)
 
 test_image = test_image[0]
 
@@ -17,7 +17,7 @@ test_image = np.expand_dims(test_image, axis = 0)
 result = cnn.predict(test_image)
 
 
-img = cv2.imread('C:/Users/thai/Downloads/small_test_set/train/fake/00A0WLZE5X.jpg')
+img = cv2.imread('C:/Users/thai/Downloads/small_test_set/test/fake/00F8LKY6JC.jpg')
 
 print(result)
 
