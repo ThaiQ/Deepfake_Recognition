@@ -9,10 +9,14 @@ path_to_img = [
     "./test_data/real_fake_from_validation.jpg",
     "./test_data/deepfake.jpg",
     "./test_data/deepfake.png",
-    "./test_data/people.jpg"
+    "./test_data/people.jpg",
+    "./test_data/fakes.jpg",
+    "./test_data/morefakes.jpg",
+    "./test_data/notreal.jpg",
 ]
 models_path = [
     'M1.h5','M2.h5','M3.h5','M4.h5','M5.h5',
+    'step1.h5','step2.h5','step3.h5'
 ]
 image_resize_value = (256,256)
 
