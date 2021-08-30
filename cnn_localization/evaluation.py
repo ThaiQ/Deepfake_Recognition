@@ -3,15 +3,18 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
-image_resize = (256,256) #(256,256)
+image_resize = (200,200) #(256,256)
 
-cnn = tf.keras.models.load_model('RCNN_97_test.h5')
+cnn = tf.keras.models.load_model('RCNN.h5')
 
-filelist = ['C:/Users/thai/Downloads/small_test_set/train/fake/00A0WLZE5X.jpg',
-'C:/Users/thai/Downloads/small_test_set/train/fake/00AUP94LQS.jpg']
+filelist = ['C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/valid/fake/007SMMOPYB.jpg',
+'C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/valid/fake/008Y48BIX8.jpg',
+'C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/valid/real/33286.jpg',
+'C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/valid/real/33292.jpg'
+]
 
 #preprocessing
-image_data = getImages_data(filelist, img_size=(100,100))
+image_data = getImages_data(filelist, img_size=image_resize)
 image_data = np.expand_dims(image_data, axis = 0)
 results = cnn.predict(np.vstack(image_data))
 

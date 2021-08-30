@@ -36,6 +36,6 @@ def get_cnn_localization_model(image_shape=(100,100,3)):
     regbox_head = layers.Dense(units=4, activation='sigmoid')(regbox_head)
 
     model = tf.keras.Model(inputs=inputs, outputs=[classifier_head,regbox_head])
-    model.compile(loss=['binary_crossentropy'], optimizer='adam', metrics=['binary_accuracy'])
+    model.compile(loss=['binary_crossentropy','mse'], optimizer='adam', metrics=['binary_accuracy'])
     model.summary()
     return model
