@@ -24,32 +24,40 @@ def read_csv(csv_path='converted_path.csv'):
     
     return images_path, labels, regbox
 
-def getImages_cropped(filelist, img_size=(100,100)):
-    face_cropper = cv2_face_cropper()
-    data = []
-    image_size_ratio = []
-    for file in filelist:
-        faces,_ = face_cropper.getfaces_withCord(file)
-        face = faces[0]['img']
-        oldSize=face.shape[0]
+def getImages_data_andResizeCord(filelist, cordList, img_size=(100,100)):
+    imageData = []
+    newcordList = []
+    
+    i = 0
+    while i < len(filelist):
+        #load image
+        face = cv2.imread(filelist[i])
+        (h, w) = face.shape[:2]
         face = cv2.resize(face, (img_size[0], img_size[1]))
-        image_size_ratio.append(face.shape[0]/oldSize)
         face = (face)/255.0
-        data.append(face)
-    return data, image_size_ratio
+        imageData.append(face)
+        newcordList.append([
+            cordList[i][0]/w,
+            cordList[i][1]/h,
+            cordList[i][2]/w,
+            cordList[i][3]/h,
+            ])
+        i+=1
+    return imageData, newcordList
 
-def resize_RegBox(regbox_batches, image_size_ratio):
-    newReg_return = []
-    for reg, ratio in zip(regbox_batches, image_size_ratio):
-        newReg = (
-            reg[0]*ratio,
-            reg[1]*ratio,
-            reg[2]*ratio,
-            reg[3]*ratio,
-        )
-        newReg_return.append(newReg)
-    print (newReg_return)
-    return newReg_return
+def getImages_data(filelist, img_size=(100,100)):
+    imageData = []
+    
+    i = 0
+    while i < len(filelist):
+        #load image
+        face = cv2.imread(filelist[i])
+        face = cv2.resize(face, (img_size[0], img_size[1]))
+        face = (face)/255.0
+        imageData.append(face)
+
+        i+=1
+    return imageData
 
 def reverse_RegBox_size(regbox, ratio):
     newReg = (
