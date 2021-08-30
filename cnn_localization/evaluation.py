@@ -3,10 +3,9 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
+image_resize = (256,256) #(256,256)
 
-image_resize = (100,100) #(256,256)
-
-cnn = tf.keras.models.load_model('RCNN.h5')
+cnn = tf.keras.models.load_model('RCNN_97_test.h5')
 
 filelist = ['C:/Users/thai/Downloads/small_test_set/train/fake/00A0WLZE5X.jpg',
 'C:/Users/thai/Downloads/small_test_set/train/fake/00AUP94LQS.jpg']
@@ -40,6 +39,7 @@ for val, cord, path in zip(fake_val, regCord, filelist):
         color = (0,255,0)
     else:
         color = (0,0,255)
+    print('{} - {}'.format(path, val))
     cv2.putText(img, prediction+'-'+str(int(val*100))+"%", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
     cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
     cv2.imshow('img '+str(path), img)

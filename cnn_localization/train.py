@@ -8,8 +8,8 @@ from utils.opencv_face_detection import cv2_face_cropper
 
 #params
 batch_size = 8
-epoch_per_batch=20
-image_resize = (100,100) #(256,256)
+epoch_per_batch=10
+image_resize = (256,256) #(256,256)
 training_path_to_csv= './converted_path.csv'
 
 model = get_cnn_localization_model((image_resize[0],image_resize[1],3))
