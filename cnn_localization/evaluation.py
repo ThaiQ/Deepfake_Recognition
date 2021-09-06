@@ -7,10 +7,12 @@ image_resize = (200,200) #(256,256)
 
 cnn = tf.keras.models.load_model('RCNN.h5')
 
-filelist = ['C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/valid/fake/007SMMOPYB.jpg',
-'C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/valid/fake/008Y48BIX8.jpg',
-'C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/valid/real/33286.jpg',
-'C:/Users/quach/Desktop/data_df/real_vs_fake/real-vs-fake/valid/real/33292.jpg'
+filelist = [
+    'C:/Users/thai/Downloads/small_test_set/test/fake/00V5CZZSSO.jpg',
+    'C:/Users/thai/Downloads/small_test_set/test/fake/00XUQJZGHU.jpg',
+    'C:/Users/thai/Downloads/small_test_set/test/real/00001.jpg',
+    'C:/Users/thai/Downloads/small_test_set/test/real/00004.jpg',
+    '../Deepfake_Detection_NN/test_data/deepfake.png',
 ]
 
 #preprocessing
@@ -43,6 +45,7 @@ for val, cord, path in zip(fake_val, regCord, filelist):
     else:
         color = (0,0,255)
     print('{} - {}'.format(path, val))
+    
     cv2.putText(img, prediction+'-'+str(int(val*100))+"%", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
     cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
     cv2.imshow('img '+str(path), img)
