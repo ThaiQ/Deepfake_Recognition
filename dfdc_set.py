@@ -7,18 +7,18 @@ import cv2
 fake_path = 'data/test_data/FAKE'
 real_path = 'data/test_data/REAL' 
 
-#create directories to store real and fake images if they do not exist
-# if not os.path.exists(fake_path):
-#   os.makedirs(fake_path)
-# if not os.path.exists(real_path):
-#   os.makedirs(real_path)
+# create directories to store real and fake images if they do not exist
+if not os.path.exists(fake_path):
+  os.makedirs(fake_path)
+if not os.path.exists(real_path):
+  os.makedirs(real_path)
 
 os.chdir('data/test_data')
 
 f = open('metadata.json',)
 metadata = json.load(f)
 for file in glob('*.mp4'):
-  ###use cv2 to do the snip snip
+  #use cv2 to do the snip snip
   capture = cv2.VideoCapture(file)
   i = 0
   while(capture.isOpened()):
@@ -30,7 +30,7 @@ for file in glob('*.mp4'):
     i += 1
   capture.release()
   cv2.destroyAllWindows()
-  ###store the image in 'data/test_data/' + metadata[file]['label']
+  #store the image in 'data/test_data/' + metadata[file]['label']
   print(file + 'stored in: data/test_data/' + metadata[file]['label'])
 
 #### PSEUDO CODE ####
