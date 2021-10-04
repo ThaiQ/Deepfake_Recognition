@@ -56,7 +56,7 @@ def getOneImagePerFolder():
         if len(images) > 0:
             faces = face_cropper.getfaces_withCord('C:/SSD_Dataset/Images/Training/Fake/' + folder + '/' + images[0])
             if len(faces[0]) == 1:
-                test_image = cv2.resize(faces[0][0]['img'], (256, 256))
+                test_image = cv2.resize(faces[0][0]['img'], (224, 224))
                 test_image = (test_image)/255.0
                 dataset[1].append(test_image)
         else:
@@ -67,7 +67,7 @@ def getOneImagePerFolder():
         if len(images) > 0:
             faces = face_cropper.getfaces_withCord('C:/SSD_Dataset/Images/Training/real/' + folder + '/' + images[0])
             if len(faces[0]) == 1:
-                test_image = cv2.resize(faces[0][0]['img'], (256, 256))
+                test_image = cv2.resize(faces[0][0]['img'], (224, 224))
                 test_image = (test_image)/255.0
                 dataset[0].append(test_image)
         else:
@@ -186,13 +186,13 @@ def getV3ValidationData():
     for image in images:
         img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/V3/real_and_fake_face/training_fake/' + image)
         imgarr = tf.keras.preprocessing.image.img_to_array(img)
-        imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (256, 256), interpolation='bilinear')
+        imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (224, 224), interpolation='bilinear')
         batch[1].append(imgarr)
     images = [f for f in listdir('C:/SSD_Dataset/Images/V3/real_and_fake_face/training_real')]
     for image in images:
         img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Images/V3/real_and_fake_face/training_real/' + image)
         imgarr = tf.keras.preprocessing.image.img_to_array(img)
-        imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (256, 256), interpolation='bilinear')
+        imgarr = tf.keras.preprocessing.image.smart_resize(imgarr, (224, 224), interpolation='bilinear')
         batch[0].append(imgarr)
     return batch
 
@@ -251,6 +251,20 @@ def getCombinedDatasetRandomized():
     images = [f for f in listdir('C:/SSD_Dataset/Combined_Dataset/Training/Real')]
     for image in images:
         array.append(['C:/SSD_Dataset/Combined_Dataset/Training/Real/' + image, 0])
+
+    array = np.array(array)
+    np.random.shuffle(array)
+    return array
+
+def getDeepfakeDatasetRandomized():
+    array = []
+    images = [f for f in listdir('C:/SSD_Dataset/Deepfakes/Train/Fake')]
+    for image in images:
+        array.append(['C:/SSD_Dataset/Deepfakes/Train/Fake/' + image, 1])
+            
+    images = [f for f in listdir('C:/SSD_Dataset/Deepfakes/Train/Real')]
+    for image in images:
+        array.append(['C:/SSD_Dataset/Deepfakes/Train/Real/' + image, 0])
 
     array = np.array(array)
     np.random.shuffle(array)
@@ -384,4 +398,18 @@ def cropImages():
 
     print(realcount)
     print(fakecount)
+
+def getFinalValidationData():
+    batch = [[], []]
+    images = [f for f in listdir('C:/SSD_Dataset/Deepfakes/Test/Fake')]
+    for image in images:
+        img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Deepfakes/Test/Fake/' + image)
+        imgarr = tf.keras.preprocessing.image.img_to_array(img)
+        batch[1].append(imgarr)
+    images = [f for f in listdir('C:/SSD_Dataset/Deepfakes/Test/Real')]
+    for image in images:
+        img = tf.keras.preprocessing.image.load_img('C:/SSD_Dataset/Deepfakes/Test/Real/' + image)
+        imgarr = tf.keras.preprocessing.image.img_to_array(img)
+        batch[0].append(imgarr)
+    return batch
 

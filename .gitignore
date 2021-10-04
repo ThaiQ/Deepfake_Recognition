@@ -4,3 +4,5 @@ package-lock.json
 __pycache__
 *.h5
 Ensemble.zip
+Deepfake_Detection_NN/EnsembleV4.zip
+EnsembleV4.zip
