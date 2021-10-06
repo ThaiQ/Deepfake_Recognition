@@ -3,3 +3,6 @@ opencv-python
 scipy
 pillow
 matplotlib
+sklearn
+pandas
+matplotlib

@@ -161,21 +161,21 @@ def getV2ValidationData():
         batch[0].append(imgarr)
     return batch
 
-def getV2ValidationDataCropped():
+def getV2ValidationDataCropped(dir='C:/SSD_Dataset/Images/V2/valid',img_size=(224,224)):
     face_cropper = cv2_face_cropper()
     dataset = [[], []]
-    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/valid/fake')]
+    images = [f for f in listdir(dir+'/fake')]
     for image in images:
-        faces = face_cropper.getfaces_withCord('C:/SSD_Dataset/Images/V2/valid/fake/' + image)
+        faces = face_cropper.getfaces_withCord(dir+'/fake/' + image)
         if len(faces[0]) == 1:
-            test_image = cv2.resize(faces[0][0]['img'], (256, 256))
+            test_image = cv2.resize(faces[0][0]['img'], img_size)
             test_image = (test_image)/255.0
             dataset[1].append(test_image)
-    images = [f for f in listdir('C:/SSD_Dataset/Images/V2/valid/real')]
+    images = [f for f in listdir(dir+'/real')]
     for image in images:
-        faces = face_cropper.getfaces_withCord('C:/SSD_Dataset/Images/V2/valid/real/' + image)
+        faces = face_cropper.getfaces_withCord(dir+'/real/' + image)
         if len(faces[0]) == 1:
-            test_image = cv2.resize(faces[0][0]['img'], (256, 256))
+            test_image = cv2.resize(faces[0][0]['img'], img_size)
             test_image = (test_image)/255.0
             dataset[0].append(test_image)
     return dataset
