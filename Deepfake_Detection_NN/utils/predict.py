@@ -120,9 +120,13 @@ def predict(image_resize_value=(224,224), model_paths=[], path_to_test_set='C:/U
     #plot confusion
     conf_mtx = confusion_matrix(
         ([1]*len(expected_fake_labels))+([0]*len(expected_real_labels)),
+        expected_fake_labels+expected_real_labels,)
+    conf_mtx_norm = confusion_matrix(
+        ([1]*len(expected_fake_labels))+([0]*len(expected_real_labels)),
         expected_fake_labels+expected_real_labels,
         normalize='true')
     plot_confusion_matrix(conf_mtx, ["real","fake"])
+    plot_confusion_matrix(conf_mtx_norm, ["real","fake"],"Normalized Confusion Matrix")
     #ROC curve
     plot_ROC_curve(fake_preds, real_preds)
     if show: plt.show()
@@ -130,22 +134,17 @@ def predict(image_resize_value=(224,224), model_paths=[], path_to_test_set='C:/U
     return fake_preds,real_preds,expected_fake_labels,expected_real_labels
 
 
-def plot_confusion_matrix(data, labels):
+def plot_confusion_matrix(data, labels, title = "Confusion Matrix"):
         """Plot confusion matrix using heatmap.
         Args:
             data (list of list): List of lists with confusion matrix data.
             labels (list): Labels which will be plotted across x and y axis.
             output_filename (str): Path to output file.
-    
         """
         fig = plt.figure(figsize = (6,6))
         ax = fig.add_subplot(1,1,1)
 
         seaborn.set(color_codes=True)
-        plt.figure(1, figsize=(9, 6))
-    
-        plt.title("Confusion Matrix")
-    
         seaborn.set(font_scale=1.4)
         ax = seaborn.heatmap(data, annot=True, cmap="YlGnBu", cbar_kws={'label': 'Scale'}, ax=ax)
 
@@ -155,15 +154,13 @@ def plot_confusion_matrix(data, labels):
         ax.set_xticklabels(labels)
         ax.set_yticklabels(labels)
     
-        ax.set(ylabel="True Label", xlabel="Predicted Label")
+        ax.set(ylabel="True Label", xlabel="Predicted Label", title = title)
     
 def plot_ROC_curve(fake_preds, real_preds):
         """Plot ROC curve.
         Args:
-            data (list of list): List of lists with confusion matrix data.
-            labels (list): Labels which will be plotted across x and y axis.
-            output_filename (str): Path to output file.
-    
+            fake_preds (list): prediction of fake.
+            real_preds (list): prediction of real.
         """
         fpr, tpr, _ = roc_curve(
             ([1]*len(fake_preds))+([0]*len(real_preds)), 
