@@ -1,12 +1,13 @@
 # Instruction
-1. You need Python 3.7.6 (higher won't work)
-2. Run `pip install -r dependencies-py3.7.6.txt`
-3. Download VGG-16 and add to `SSD_Implement` folder
+1. You will need Python 3, and NodeJS
+2. Install Tensorflow 2.0
+3. Download our ensemble models
+4. Save downloaded models in `server/models`
 
-### Download the convolutionalized VGG-16 weights
+![image](https://user-images.githubusercontent.com/18486562/137400179-1abc726e-1d04-407f-b194-2f9c1a6ea66b.png)
 
-In order to train an SSD300 or SSD512 from scratch, download the weights of the fully convolutionalized VGG-16 model trained to convergence on ImageNet classification here:
+Make sure its `.h5` files - script will handle parsing.
 
-[`VGG_ILSVRC_16_layers_fc_reduced.h5`](https://drive.google.com/open?id=1sBmajn6vOE7qJ8GnxUJt4fGPuffVUZox).
-
-As with all other weights files below, this is a direct port of the corresponding `.caffemodel` file that is provided in the repository of the original Caffe implementation.
+5. `pip install -r ./server/Deepfake_Detection_NN/requirement.txt`
+6. Run server `python app.py`
+7. Run web-app `npm install` before `npm start`
