@@ -1,8 +1,10 @@
 from cv2 import cv2
 import numpy as np
 import os
+import imageio
 from os import listdir
 from os.path import isfile, join
+from glob import glob
 
 # set video file path of input video with name and extension
 path_to_data = './data/Fake_Videos/'
@@ -35,4 +37,30 @@ for value in onlyfiles:
         # next frame
         index += 1
     
+def split_vid(vid_path):
+    path = './uploads/video_frames'
+    if not os.path.exists(path):
+      os.makedirs(path)
+    capture = cv2.VideoCapture(vid_path)
+    i = 0
+    while(capture.isOpened()):
+        ret, frame = capture.read()
+        if not ret:
+            break
+        if i % 20 == 0:
+            cv2.imwrite(path + '/video_frame' + str(i) + '.jpg', frame)
+        i += 1
+    capture.release()
+    cv2.destroyAllWindows()
 
+def stitch_vid():
+  models = ['./models/'+f for f in listdir('./models')]
+  models = list(filter(lambda f: f[-2:] == 'h5', models))
+
+  img_siz = (224,224)
+  images = []
+  for image in glob('./uploads/video_frames/*.jpg'):
+      _, prediction = predict_visual(image_resize_value=img_siz, model_paths=models, path_to_img=[image], save=None, draw = True, show = False)
+      images.append(imageio.read(prediction))
+      path = './uploads/'
+      imageio.mimsave(path + 'prediction.gif', images) #name can be chagned later
