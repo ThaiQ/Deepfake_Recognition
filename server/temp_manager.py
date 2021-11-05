@@ -1,7 +1,9 @@
 import datetime
 from Deepfake_Detection_NN.utils.predict import predict_visual
+from videosplitter import split_vid, stitch_vid
 from os import listdir
 import os
+
 
 class Temp_Manager:
     memo = {
@@ -20,7 +22,6 @@ class Temp_Manager:
     img_siz = (224,224)
 
     def process(self, img_name):
-
         hashFile = ''
         if img_name in self.memo:
             pointer = self.memo[img_name]
@@ -28,10 +29,12 @@ class Temp_Manager:
         else:
             img_path = './uploads/'+img_name
             extension = img_name[img_name.index('.'):]
-            hash,_=predict_visual(image_resize_value=self.img_siz, model_paths=self.models, path_to_img=[img_path], save=self.save_path, draw = True, show = False)
             if extension == '.mp4':
-                hashFile = hash+extension
+                split_vid(img_path)
+                stitch_vid()
+                hashFile = 'prediction.gif' #can be changed later
             else:
+                hash,_=predict_visual(image_resize_value=self.img_siz, model_paths=self.models, path_to_img=[img_path], save=self.save_path, draw = True, show = False)
                 hashFile = hash+".png"
             self.memo[img_name] = {
                 "original_file": img_name,
@@ -60,4 +63,6 @@ class Temp_Manager:
 
         return img_name,hashFile
     
+    
+
 
