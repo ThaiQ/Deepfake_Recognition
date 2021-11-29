@@ -1,5 +1,11 @@
 # SJSU_Cmpe195F - Fall 2021 - Deepfake Detection Project
 
+# Github Repo
+https://github.com/ThaiQ/Deepfake_Recognition
+
+# Demo
+https://www.youtube.com/watch?v=ga2ilTjN0pk&ab_channel=David
+
 # Dependencies
 1. NodeJS: https://nodejs.org/en/download/
 2. Python3: https://www.python.org/downloads/
