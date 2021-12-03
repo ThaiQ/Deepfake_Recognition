@@ -1,9 +1,0 @@
-tensorflow
-opencv-python
-scipy
-pillow
-matplotlib
-sklearn
-pandas
-matplotlib
-imageio
