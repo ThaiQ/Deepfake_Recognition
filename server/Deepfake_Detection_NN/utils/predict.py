@@ -1,9 +1,9 @@
 import tensorflow as tf
 import numpy as np
 import cv2
-from Deepfake_Detection_NN.utils.opencv_face_detection import cv2_face_cropper
+from utils.opencv_face_detection import cv2_face_cropper
 import hashlib
-from Deepfake_Detection_NN.getData import getV2ValidationDataCropped
+from getData import *
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score
 import seaborn
@@ -80,8 +80,6 @@ save=None, draw = True, show = True):
     if show:
         # wait until any key is pressed or close window
         cv2.waitKey(0)
-    
-    return hash, img
 
 def predict(image_resize_value=(224,224), model_paths=[], path_to_test_set='C:/Users/quach/Desktop/data_df/real_vs_fake/test/test', show = False):
     if not isinstance(model_paths, list):
@@ -92,10 +90,13 @@ def predict(image_resize_value=(224,224), model_paths=[], path_to_test_set='C:/U
         return
 
     models = []
-    for path in model_paths:
-        models.append(tf.keras.models.load_model(path))
+    models.append(tf.keras.models.load_model('C:/Github/Deepfake_Recognition_SSD/Deepfake_Detection_NN/utils/M1.h5'))
+    models.append(tf.keras.models.load_model('C:/Github/Deepfake_Recognition_SSD/Deepfake_Detection_NN/utils/M2.h5'))
+    models.append(tf.keras.models.load_model('C:/Github/Deepfake_Recognition_SSD/Deepfake_Detection_NN/utils/M3.h5'))
+    models.append(tf.keras.models.load_model('C:/Github/Deepfake_Recognition_SSD/Deepfake_Detection_NN/utils/M4.h5'))
+    models.append(tf.keras.models.load_model('C:/Github/Deepfake_Recognition_SSD/Deepfake_Detection_NN/utils/M5.h5'))
 
-    batches = getV2ValidationDataCropped(path_to_test_set,image_resize_value)
+    batches = getFinalValidationData()
 
     X_fake = np.array(batches[1])
     X_real = np.array(batches[0])
@@ -103,20 +104,9 @@ def predict(image_resize_value=(224,224), model_paths=[], path_to_test_set='C:/U
     fake_preds = np.array([0]*len(X_fake))
     real_preds = np.array([0]*len(X_real))
 
-    fake_records = []
-    real_records = []
-
     for model in models:
-        #prediction
-        pf = np.array(model.predict(X_fake, batch_size=32)).flatten()
-        fake_preds = np.add(fake_preds,pf)
-        pr = np.array(model.predict(X_real, batch_size=32)).flatten()
-        real_preds = np.add(real_preds,pr)
-        #record
-        fake_records.append(pf)
-        real_records.append(pr)
-
-
+        fake_preds = np.add(fake_preds,np.array(model.predict(X_fake, batch_size=32)).flatten())
+        real_preds = np.add(real_preds,np.array(model.predict(X_real, batch_size=32)).flatten())
     
     fake_preds=fake_preds/len(models)
     real_preds=real_preds/len(models)
@@ -142,11 +132,7 @@ def predict(image_resize_value=(224,224), model_paths=[], path_to_test_set='C:/U
     plot_confusion_matrix(conf_mtx_norm, ["real","fake"],"Normalized Confusion Matrix")
     #ROC curve
     plot_ROC_curve(fake_preds, real_preds)
-    plot_ROC_curve_overlay(fake_records, real_records)
-
     if show: plt.show()
-
-    return fake_preds,real_preds,expected_fake_labels,expected_real_labels
 
 
 def plot_confusion_matrix(data, labels, title = "Confusion Matrix"):
@@ -171,30 +157,6 @@ def plot_confusion_matrix(data, labels, title = "Confusion Matrix"):
     
         ax.set(ylabel="True Label", xlabel="Predicted Label", title = title)
     
-def plot_ROC_curve_overlay(fake_records, real_records):
-        """Plot ROC curve.
-        Args:
-            fake_records (2d list): prediction of fake of each model.
-            real_records (2d list): prediction of real of each model.
-        """
-        
-        fig = plt.figure(figsize = (6,6))
-        ax = fig.add_subplot(1,1,1)
-        ax.plot([0,1],[0,1],linestyle='--', label='0.5 line')
-
-        model_ind = 1
-        for fake_preds,real_preds in zip(fake_records, real_records):
-            fpr, tpr, _ = roc_curve(
-                ([1]*len(fake_preds))+([0]*len(real_preds)), 
-                list(fake_preds)+list(real_preds), pos_label=0)
-            #auc score
-            auc=roc_auc_score(([1]*len(fake_preds))+([0]*len(real_preds)), list(fake_preds)+list(real_preds))
-            ax.plot(tpr,fpr, marker='.', label='Model-{} AUC: {}'.format(model_ind, auc))
-            model_ind+=1
-
-        ax.set(ylabel="True positive rate", xlabel="False positive rate", title="ROC curve of models")
-        ax.legend()
-
 def plot_ROC_curve(fake_preds, real_preds):
         """Plot ROC curve.
         Args:
@@ -211,5 +173,5 @@ def plot_ROC_curve(fake_preds, real_preds):
         ax = fig.add_subplot(1,1,1)
         ax.plot([0,1],[0,1],linestyle='--', label='0.5 line')
         ax.plot(tpr,fpr, marker='.', label='Model AUC: {}'.format(auc))
-        ax.set(ylabel="True positive rate", xlabel="False positive rate", title="Ensemble ROC curve")
+        ax.set(ylabel="True positive rate", xlabel="False positive rate", title="ROC curve")
         ax.legend()
