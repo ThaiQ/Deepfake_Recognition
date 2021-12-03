@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 from utils.opencv_face_detection import cv2_face_cropper
 import hashlib
-from getData import getV2ValidationDataCropped
+from getData import *
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score
 import seaborn
@@ -90,10 +90,13 @@ def predict(image_resize_value=(224,224), model_paths=[], path_to_test_set='C:/U
         return
 
     models = []
-    for path in model_paths:
-        models.append(tf.keras.models.load_model(path))
+    models.append(tf.keras.models.load_model('C:/Github/Deepfake_Recognition_SSD/Deepfake_Detection_NN/utils/M1.h5'))
+    models.append(tf.keras.models.load_model('C:/Github/Deepfake_Recognition_SSD/Deepfake_Detection_NN/utils/M2.h5'))
+    models.append(tf.keras.models.load_model('C:/Github/Deepfake_Recognition_SSD/Deepfake_Detection_NN/utils/M3.h5'))
+    models.append(tf.keras.models.load_model('C:/Github/Deepfake_Recognition_SSD/Deepfake_Detection_NN/utils/M4.h5'))
+    models.append(tf.keras.models.load_model('C:/Github/Deepfake_Recognition_SSD/Deepfake_Detection_NN/utils/M5.h5'))
 
-    batches = getV2ValidationDataCropped(path_to_test_set,image_resize_value)
+    batches = getFinalValidationData()
 
     X_fake = np.array(batches[1])
     X_real = np.array(batches[0])
@@ -130,8 +133,6 @@ def predict(image_resize_value=(224,224), model_paths=[], path_to_test_set='C:/U
     #ROC curve
     plot_ROC_curve(fake_preds, real_preds)
     if show: plt.show()
-
-    return fake_preds,real_preds,expected_fake_labels,expected_real_labels
 
 
 def plot_confusion_matrix(data, labels, title = "Confusion Matrix"):
@@ -171,6 +172,6 @@ def plot_ROC_curve(fake_preds, real_preds):
         fig = plt.figure(figsize = (6,6))
         ax = fig.add_subplot(1,1,1)
         ax.plot([0,1],[0,1],linestyle='--', label='0.5 line')
-        ax.plot(fpr,tpr, marker='.', label='Model AUC: {}'.format(auc))
+        ax.plot(tpr,fpr, marker='.', label='Model AUC: {}'.format(auc))
         ax.set(ylabel="True positive rate", xlabel="False positive rate", title="ROC curve")
         ax.legend()
