@@ -45,3 +45,9 @@ CNN Architecture
 1. Follow `server installation` to step 2
 3. Get data at https://www.kaggle.com/c/deepfake-detection-challenge/data
 2. run `train.py` in `./server/Deepfake_Detection_NN`
+
+# Sample Model Output
+
+![image](https://user-images.githubusercontent.com/18486562/147394641-249c6deb-6b63-4494-b5c3-c252c4f06a83.png)
+
+Where fakes are 50% and greater.
